@@ -101,10 +101,15 @@ stage1.blocks = [
     Block(475, 25),
     Block(525, 25),
     Block(575, 25),
+    Block(625, 25),
+    Block(675, 25),
+    Block(725, 25),
+    Block(775, 25),
+    Block(825, 25),
 
-    Block(475, 75),
-    Block(525, 75),
-    Block(175, 75),
+    # Block(475, 75),
+    # Block(525, 75),
+    Block(125, 75),
 
     Block(225, 275, 2, 0),
     Block(275, 275, 1, 1),
