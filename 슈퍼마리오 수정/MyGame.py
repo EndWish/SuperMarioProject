@@ -4,6 +4,6 @@ import pico2d
 
 import title_state
 
-pico2d.open_canvas(constant.screen_w, constant.screen_h, True, True)
+pico2d.open_canvas(constant.screen_w, constant.screen_h, True, False)
 game_framework.run(title_state)
 pico2d.close_canvas()

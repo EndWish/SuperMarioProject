@@ -1,5 +1,5 @@
 import time
-
+import pico2d
 import Global
 
 class GameState:
@@ -31,10 +31,17 @@ def run(start_state):
     while running:
         stack[-1].handle_events()
         stack[-1].update()
+
+        # 프레임 고정
+        if time.time() - Global.pre_time < 0.01:
+            pico2d.delay(0.01 - (time.time() - Global.pre_time))
+
         stack[-1].draw()
 
         Global.delta_time = time.time() - Global.pre_time
         Global.pre_time = time.time()
+
+
     # 종료되었을때 남은 스택 전부 해제
     while len(stack) > 0:
         stack[-1].exit()
