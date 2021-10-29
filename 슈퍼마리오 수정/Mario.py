@@ -74,7 +74,10 @@ class Mario:
             self.flip = 'h'
 
         # 이동
-        self.pos.x += self.speed
+        self.pos.x += self.speed * delta_time
+
+        target_pos = Position(self.pos.x + self.speed * delta_time, self.pos.y, self.pos.w, self.pos.h )
+        # target_pos 와 부딪히면 벽이 있는지 확인
 
     def draw(self):
         self.animator[self.draw_mode][self.motion].draw(self.pos.x, self.pos.y, self.flip)

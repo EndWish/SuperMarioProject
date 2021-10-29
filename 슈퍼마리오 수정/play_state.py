@@ -22,7 +22,7 @@ def enter():
     global background_img, mario
     background_img = load_image('Title_Img.png')
     # 마리오
-    mario = Mario(100, 100)
+    mario = Mario(100.0, 100.0)
     # 블럭
 
     # 아이템

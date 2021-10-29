@@ -1,6 +1,8 @@
 import time
 import pico2d
 import Global
+import constant
+
 
 class GameState:
     def __init__(self, state):
@@ -33,8 +35,8 @@ def run(start_state):
         stack[-1].update()
 
         # 프레임 고정
-        if time.time() - Global.pre_time < 0.01:
-            pico2d.delay(0.01 - (time.time() - Global.pre_time))
+        if time.time() - Global.pre_time < (1.0 / constant.game_fps):
+            pico2d.delay((1.0 / constant.game_fps) - (time.time() - Global.pre_time))
 
         stack[-1].draw()
 
