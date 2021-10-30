@@ -14,6 +14,7 @@ class Mario:
 
         self.dir = 0  # 방향키를 눌렀는지 (1 = right 키, -1 = left 키)
         self.speed = 0
+        self.jump_key = False
         self.v_speed = 0
         self.landing = False
 
@@ -27,17 +28,16 @@ class Mario:
             [
                 SingleIndexAnimation(Global.player_img, 0, 0, 18, 18, 50, 50),  # idle : 0
                 SingleIndexAnimation(Global.player_img, 20, 0, 18, 18, 50, 50),  # jump : 1
-                OriginAnimation(Global.player_img, 4, 40, 0, 18, 18, 20, 50, 50, 0.05),  # run : 2
+                OriginAnimation(Global.player_img, 40, 0, 18, 18, 50, 50, 4, 20, 0.05),  # run : 2
                 SingleIndexAnimation(Global.player_img, 120, 0, 18, 18, 50, 50),  # turn : 3
             ],
             [
                 SingleIndexAnimation(Global.player_img, 0, 20, 18, 36, 50, 100),  # idle : 0
                 SingleIndexAnimation(Global.player_img, 20, 20, 18, 36, 50, 100),  # jump : 1
-                OriginAnimation(Global.player_img, 4, 40, 20, 18, 36, 20, 50, 100, 0.05),  # run : 2
+                OriginAnimation(Global.player_img, 40, 20, 18, 36, 50, 100, 4, 20, 0.05),  # run : 2
                 SingleIndexAnimation(Global.player_img, 120, 20, 18, 36, 50, 100),  # turn : 3
             ],
         ]
-
 
     def move(self):
         # 움직일수 없는 조건을 함수로 제공하여 리턴
@@ -67,12 +67,6 @@ class Mario:
         elif self.speed < -constant.mario_max_speed:
             self.speed = -constant.mario_max_speed
 
-        # 좌우반전
-        if self.speed > 0 and self.flip == 'h':
-            self.flip = ''
-        elif self.speed < 0 and self.flip == '':
-            self.flip = 'h'
-
         # 좌우 이동
         target_pos = Position(self.pos.x + self.speed * delta_time, self.pos.y, self.pos.w, self.pos.h)
         check_blocks = play_state.get_check_blocks(target_pos)
@@ -84,11 +78,11 @@ class Mario:
             if col_xy != (0, 0):
                 target_pos.x -= col_xy[0]
                 self.speed = 0
+                break
 
         self.pos.x = target_pos.x
 
         # 낙하&점프
-
         self.v_speed -= constant.mario_gravity * delta_time
         if self.v_speed < constant.mario_min_v_speed:  # 낙하 최대속도 조정
             self.v_speed = constant.mario_min_v_speed
@@ -109,9 +103,35 @@ class Mario:
                     target_pos.y -= col_xy[1] - 1
                     self.v_speed = 0
                     block.heading()
+                break
 
         self.pos.y = target_pos.y
+
+        if self.jump_key:
+            self.jump()
+
         play_state.add_collision_range(target_pos)
+
+        # 모션
+
+        # 좌우반전
+        if self.speed > 0 and self.flip == 'h':
+            self.flip = ''
+        elif self.speed < 0 and self.flip == '':
+            self.flip = 'h'
+
+        # 모션 바꾸기
+        if self.landing:
+            if self.speed == 0:
+                self.motion = 0
+            else:  # speed != 0
+                self.animator[self.mode][self.motion].time_slice_speed = abs(self.speed / constant.mario_max_speed) + 0.01
+                if (self.speed > 0 and self.dir == -1) or (self.speed < 0 and self.dir == 1):
+                    self.motion = 3
+                else:
+                    self.motion = 2
+        else:
+            self.motion = 1
 
     def jump(self):
         if self.landing:
@@ -122,10 +142,6 @@ class Mario:
 
     def add_dir(self, d):
         self.dir += d
-
-
-
-
 
 
 

@@ -18,6 +18,8 @@ effects = []
 enemies = []
 attacks = []
 
+score = 0
+
 collisions_range = set()
 
 def enter():
@@ -33,8 +35,8 @@ def enter():
 
 
 def exit():
-    global background_img, mario
-    del background_img, mario
+    global background_img, mario, blocks, items, effects, enemies, attacks
+    del background_img, mario, blocks, items, effects, enemies, attacks
 
 
 def handle_events():
@@ -52,7 +54,7 @@ def handle_events():
             elif event.key == SDLK_LEFT:
                 mario.add_dir(-1)
             elif event.key == SDLK_UP:
-                mario.jump()
+                mario.jump_key = True
             elif event.key == SDLK_p:
                 Global.show_collide_rec = not Global.show_collide_rec
 
@@ -61,6 +63,8 @@ def handle_events():
                 mario.add_dir(-1)
             elif event.key == SDLK_LEFT:
                 mario.add_dir(+1)
+            elif event.key == SDLK_UP:
+                mario.jump_key = False
 
 
 def draw():
@@ -76,7 +80,8 @@ def draw():
     # 마리오 그리기
     mario.draw()
     # 아이템 그리기
-    
+    for item in items:
+        item.draw()
     # 이펙트 그리기
 
     # 공격 그리기
@@ -91,7 +96,9 @@ def draw():
 
 def update():
     mario.move()
-    pass
+
+    for item in items:
+        item.update()
 
 
 def pause():
@@ -133,3 +140,9 @@ def get_check_blocks(pos):
 def add_collision_range(pos):
     if Global.show_collide_rec:
         collisions_range.add(pos)
+
+
+def add_score(value):
+    global score
+    score += value
+
