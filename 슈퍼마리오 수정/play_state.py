@@ -18,6 +18,7 @@ effects = []
 enemies = []
 attacks = []
 
+collisions_range = set()
 
 def enter():
     global background_img, mario, blocks
@@ -50,6 +51,10 @@ def handle_events():
                 mario.add_dir(+1)
             elif event.key == SDLK_LEFT:
                 mario.add_dir(-1)
+            elif event.key == SDLK_UP:
+                mario.jump()
+            elif event.key == SDLK_p:
+                Global.show_collide_rec = not Global.show_collide_rec
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:
@@ -75,6 +80,11 @@ def draw():
     # 이펙트 그리기
 
     # 공격 그리기
+    
+    # 충돌범위 그리기
+    for collision in collisions_range:
+        collision.draw_collision_rect()
+    collisions_range.clear()
 
     update_canvas()
 
@@ -117,8 +127,9 @@ def get_check_blocks(pos):
             e = middle - 1
     index_right = e
 
-    return index_left, index_right
+    return blocks[index_left:index_right + 1]
 
 
-
-
+def add_collision_range(pos):
+    if Global.show_collide_rec:
+        collisions_range.add(pos)

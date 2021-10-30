@@ -1,3 +1,7 @@
+import Global
+import pico2d
+
+
 class Position:
     def __init__(self, x, y, w, h):
         self.x = x
@@ -29,7 +33,11 @@ class Position:
             else:
                 col_y = self_bottom - other_top - 1
 
-            return int(col_x), int(col_y)
+            return col_x, col_y
         else:
             return 0, 0
+
+    def draw_collision_rect(self):
+        if Global.show_collide_rec:
+            pico2d.draw_rectangle(self.x - self.w/2, self.y - self.h/2, self.x + self.w/2, self.y + self.h/2)
 

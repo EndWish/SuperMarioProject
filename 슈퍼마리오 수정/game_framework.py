@@ -31,14 +31,16 @@ def run(start_state):
 
     # 반복적으로 실행하기
     while running:
-        stack[-1].handle_events()
-        stack[-1].update()
+        if Global.delta_time <= 0.2:    # 프레임 드랍이 너무 심할때 정상화될때 까지 멈춤
 
-        # 프레임 고정
-        if time.time() - Global.pre_time < (1.0 / constant.game_fps):
-            pico2d.delay((1.0 / constant.game_fps) - (time.time() - Global.pre_time))
+            stack[-1].handle_events()
+            stack[-1].update()
 
-        stack[-1].draw()
+            # 프레임 고정
+            if time.time() - Global.pre_time < (1.0 / constant.game_fps):
+                pico2d.delay((1.0 / constant.game_fps) - (time.time() - Global.pre_time))
+
+            stack[-1].draw()
 
         Global.delta_time = time.time() - Global.pre_time
         Global.pre_time = time.time()

@@ -1,4 +1,6 @@
+import pico2d
 import Global
+import math
 from Animation import *
 from Position import *
 
@@ -13,13 +15,18 @@ class Block:
         self.animator = None
         self.item_queue = []
 
+    def heading(self):
+        if self.hidden:
+            self.hidden = False
+
     def draw(self):
-        self.animator.draw(self.pos.x, self.pos.y, '')
-        pass
+        if not self.hidden:
+            self.animator.draw(self.pos.x, self.pos.y, '')
 
     def save(self):
         txt = "%d %d %d %d %d" % (self.block_number(), self.pos.x, self.pos.y, self.hidden, len(self.item_queue))
         return txt
+
 
 class RigidBlock(Block):
     def block_number(self):
@@ -37,6 +44,19 @@ class BounceBlock(Block):
     def __init__(self, pos, hidden=False):
         super().__init__(pos, hidden)
         self.animator = SingleIndexAnimation(Global.structure_img, 0, 16, 16, 16, 50, 50)
+        self.bounce = 0
+
+    def draw(self):
+        if not self.hidden:
+            if self.bounce <= 0:
+                self.animator.draw(self.pos.x, self.pos.y, '')
+            else:
+                self.animator.draw(self.pos.x, self.pos.y + math.sin(self.bounce * math.pi / 0.15) * 25, '')
+                self.bounce -= Global.delta_time
+
+    def heading(self):
+        super(BounceBlock, self).heading()
+        self.bounce = 0.15
 
 
 def load(txt):

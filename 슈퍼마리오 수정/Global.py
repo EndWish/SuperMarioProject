@@ -2,12 +2,14 @@ import time
 import pico2d
 
 game_running = True
+show_collide_rec = True
 
 pre_time = time.time()
 delta_time = 0.01
 
 play_stage_number = None
 
+# 이미지
 player_img = None
 structure_img = None
 enemy_img = None

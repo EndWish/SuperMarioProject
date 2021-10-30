@@ -1,5 +1,6 @@
 import Global
 import constant
+import play_state
 from Position import *
 from Animation import *
 
@@ -8,13 +9,13 @@ class Mario:
 
     def __init__(self, x, y):
         self.life = 3
-        self.pos = Position(x, y, 50, 50)
+        self.pos = Position(x, y, 46, 46)
         self.mode = 0
 
         self.dir = 0  # 방향키를 눌렀는지 (1 = right 키, -1 = left 키)
         self.speed = 0
         self.v_speed = 0
-        self.landing = True
+        self.landing = False
 
         # 드로우 관련 변수
         self.draw_mode = 0
@@ -72,11 +73,49 @@ class Mario:
         elif self.speed < 0 and self.flip == '':
             self.flip = 'h'
 
-        # 이동
-        self.pos.x += self.speed * delta_time
+        # 좌우 이동
+        target_pos = Position(self.pos.x + self.speed * delta_time, self.pos.y, self.pos.w, self.pos.h)
+        check_blocks = play_state.get_check_blocks(target_pos)
 
-        target_pos = Position(self.pos.x + self.speed * delta_time, self.pos.y, self.pos.w, self.pos.h )
         # target_pos 와 부딪히면 벽이 있는지 확인
+        for block in check_blocks:
+            play_state.add_collision_range(block.pos)
+            col_xy = target_pos.collide_pos(block.pos)
+            if col_xy != (0, 0):
+                target_pos.x -= col_xy[0]
+                self.speed = 0
+
+        self.pos.x = target_pos.x
+
+        # 낙하&점프
+
+        self.v_speed -= constant.mario_gravity * delta_time
+        if self.v_speed < constant.mario_min_v_speed:  # 낙하 최대속도 조정
+            self.v_speed = constant.mario_min_v_speed
+
+        target_pos = Position(self.pos.x, self.pos.y + self.v_speed * delta_time, self.pos.w, self.pos.h + 2)
+        check_blocks = play_state.get_check_blocks(target_pos)
+        # target_pos 와 부딪히면 벽이 있는지 확인
+        self.landing = False
+        for block in check_blocks:
+            play_state.add_collision_range(block.pos)
+            col_xy = target_pos.collide_pos(block.pos)
+            if col_xy != (0, 0):
+                if self.v_speed <= 0 and (not block.hidden):   # 아래쪽 충돌 확인
+                    target_pos.y -= col_xy[1] + 1
+                    self.v_speed = 0
+                    self.landing = True
+                else:   # 위쪽 충돌 확인
+                    target_pos.y -= col_xy[1] - 1
+                    self.v_speed = 0
+                    block.heading()
+
+        self.pos.y = target_pos.y
+        play_state.add_collision_range(target_pos)
+
+    def jump(self):
+        if self.landing:
+            self.v_speed = 1500
 
     def draw(self):
         self.animator[self.draw_mode][self.motion].draw(self.pos.x, self.pos.y, self.flip)

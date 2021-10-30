@@ -6,4 +6,4 @@ mario_accel = 2000  # 가속도
 mario_retar = 2500  # 감속도
 mario_max_speed = 800
 mario_min_v_speed = -1500
-mario_gravity = 50
+mario_gravity = 5000
