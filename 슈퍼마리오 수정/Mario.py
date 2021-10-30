@@ -42,7 +42,6 @@ class Mario:
         # 움직일수 없는 조건을 함수로 제공하여 리턴
 
         delta_time = Global.delta_time
-        print(delta_time)
 
         # 속도계산
         if self.dir == 1:  # 오른쪽키(+가속)
