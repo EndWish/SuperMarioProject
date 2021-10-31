@@ -23,15 +23,20 @@ score = 0
 collisions_range = set()
 
 def enter():
-    global background_img, mario, blocks
+    global background_img, mario, blocks, items, enemies, attacks, effects
     background_img = load_image('Title_Img.png')
     # 마리오
     mario = Mario(100.0, 100.0)
     # 블럭
     blocks = Load_blocks('stage' + str(Global.play_stage_number) + '_blocks.txt')
     # 아이템
-
+    items = []
     # 적
+    enemies = []
+
+    # 그 외
+    attacks = []
+    effects = []
 
 
 def exit():

@@ -19,6 +19,9 @@ class Item:
     def draw(self):
         self.animator.draw(self.pos.x, self.pos.y, self.flip)
 
+    def draw_edit(self, x, y):
+        self.animator.draw(x, y, self.flip)
+
     def update(self):
         pass
 

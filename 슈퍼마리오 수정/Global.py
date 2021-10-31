@@ -3,6 +3,7 @@ import pico2d
 
 game_running = True
 show_collide_rec = True
+edit_mode = False
 
 pre_time = time.time()
 delta_time = 0.01
@@ -15,17 +16,20 @@ structure_img = None
 enemy_img = None
 item_img = None
 stageButton_img = None
+editButton_img = None
 
 
 def load_images():
-    global player_img, structure_img, enemy_img, item_img, stageButton_img
+    global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img
     player_img = pico2d.load_image('Player_Img.png')
     structure_img = pico2d.load_image('Structure_Img.png')
     enemy_img = pico2d.load_image('EnemyImg.png')
     item_img = pico2d.load_image('Item_Img.png')
     stageButton_img = pico2d.load_image('StageButtons_Img.png')
+    editButton_img = pico2d.load_image('EditButton_Img.png')
+
 
 
 def del_images():
-    global player_img, structure_img, enemy_img, item_img, stageButton_img
-    del player_img, structure_img, enemy_img, item_img, stageButton_img
+    global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img
+    del player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img

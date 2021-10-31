@@ -1,4 +1,3 @@
-import pico2d
 import Global
 import math
 
@@ -25,6 +24,13 @@ class Block:
     def draw(self):
         if not self.hidden:
             self.animator.draw(self.pos.x, self.pos.y, '')
+
+    def draw_edit(self):
+        if self.hidden:
+            self.animator.image.opacify(0.5)
+        else:
+            self.animator.image.opacify(1)
+        self.animator.draw(self.pos.x, self.pos.y, '')
 
     def save(self):
         txt = "%d %d %d %d %d" % (self.block_number(), self.pos.x, self.pos.y, self.hidden, len(self.item_queue))
@@ -63,6 +69,17 @@ class BounceBlock(Block):
             else:
                 self.animator[motion].draw(self.pos.x, self.pos.y + math.sin(self.bounce * math.pi / 0.15) * 20, '')
                 self.bounce -= Global.delta_time
+
+    def draw_edit(self):
+        motion = 0
+        if len(self.item_queue) > 0:
+            motion = 1
+
+        if self.hidden:
+            self.animator[motion].image.opacify(0.5)
+        else:
+            self.animator[motion].image.opacify(1)
+        self.animator[motion].draw(self.pos.x, self.pos.y, '')
 
     def heading(self):
         super(BounceBlock, self).heading()
