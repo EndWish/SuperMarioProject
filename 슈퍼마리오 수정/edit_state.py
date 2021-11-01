@@ -10,41 +10,55 @@ name = "Edit_State"
 background_img = None
 
 mario = None
-blocks = []
-enemies = []
+blocks = None
+enemies = None
 
 mouse_on_block = None
-
+window_points = tuple()
+camera_center = None
 
 def enter():
-    global background_img, mario, blocks, enemies
+    global background_img, mario, blocks, enemies, window_points, camera_center
     background_img = load_image('Title_Img.png')
+    # 카메라 정보 가져오기
+    camera_center = Position(constant.screen_w/2, constant.screen_h/2, 0, 0)
+    Global.camera.load_window_max('DataFolder/stage' + str(Global.play_stage_number) + '_camera.txt')
+    window_points = (Global.camera.left_min, Global.camera.bottom_min, Global.camera.right_max, Global.camera.top_max)
+    Global.camera.window_expand(100)
     # 마리오
     mario = Mario(100.0, 100.0)
     # 블럭
-    blocks = Load_blocks('stage' + str(Global.play_stage_number) + '_blocks.txt')
+    blocks = Load_blocks('DataFolder/stage' + str(Global.play_stage_number) + '_blocks.txt')
     # 적
     enemies = []
 
 
 def exit():
-    global background_img, mario, blocks, enemies
+    global background_img, mario, blocks, enemies, window_points, camera_center
     # 파일에 저장하기
-    del background_img, mario, blocks, enemies
+    del background_img, mario, blocks, enemies, window_points, camera_center
 
 
 def handle_events():
-    global mario
+    global mario, camera_center
 
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_MOUSEMOTION:
-            search_mouse_on_block(event.x, constant.screen_h - event.y)
+            search_mouse_on_block(event.x + Global.camera.left, constant.screen_h - event.y + Global.camera.bottom)
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
                 game_framework.pop_state()
+            elif event.key == SDLK_w:
+                camera_center.y += 100
+            elif event.key == SDLK_a:
+                camera_center.x -= 100
+            elif event.key == SDLK_s:
+                camera_center.y -= 100
+            elif event.key == SDLK_d:
+                camera_center.x += 100
 
 
 def draw():
@@ -69,11 +83,13 @@ def draw():
     # 공격 그리기
 
     # 충돌범위 그리기
-
+    draw_rectangle(window_points[0] - Global.camera.left, window_points[1] - Global.camera.bottom, window_points[2] - Global.camera.left, window_points[3] - Global.camera.bottom)
     update_canvas()
 
 
 def update():
+    global camera_center
+    Global.camera.set_pos(camera_center)
     pass
 
 

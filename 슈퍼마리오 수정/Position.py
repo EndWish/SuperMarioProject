@@ -39,5 +39,6 @@ class Position:
 
     def draw_collision_rect(self):
         if Global.show_collide_rec:
-            pico2d.draw_rectangle(self.x - self.w/2, self.y - self.h/2, self.x + self.w/2, self.y + self.h/2)
-
+            x = self.x - Global.camera.left
+            y = self.y - Global.camera.bottom
+            pico2d.draw_rectangle(x - self.w/2, y - self.h/2, x + self.w/2, y + self.h/2)

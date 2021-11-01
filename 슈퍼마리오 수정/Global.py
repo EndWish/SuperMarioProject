@@ -1,6 +1,7 @@
 import time
 import pico2d
 
+
 game_running = True
 show_collide_rec = True
 edit_mode = False
@@ -9,6 +10,7 @@ pre_time = time.time()
 delta_time = 0.01
 
 play_stage_number = None
+camera = None
 
 # 이미지
 player_img = None

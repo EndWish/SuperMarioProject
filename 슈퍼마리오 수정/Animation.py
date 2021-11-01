@@ -1,4 +1,5 @@
 import time
+import Global
 
 
 class Animation:
@@ -21,6 +22,9 @@ class SingleIndexAnimation(Animation):
         self.draw_h = draw_h
 
     def draw(self, x, y, flip):
+        x -= Global.camera.left
+        y -= Global.camera.bottom
+
         self.image.clip_composite_draw(self.img_x, self.img_y, self.img_w, self.img_h,
                                        0, flip, x, y, self.draw_w, self.draw_h)
 
@@ -44,6 +48,9 @@ class OriginAnimation(Animation):
         self.time_slice_speed = 1.0
 
     def draw(self, x, y, flip):
+        x -= Global.camera.left
+        y -= Global.camera.bottom
+
         if (time.time() - self.now_time) >= self.time_slice / (self.time_slice_speed + 0.001):
             self.now_time = time.time()
             self.index = (self.index + 1) % self.indexMax

@@ -25,10 +25,12 @@ collisions_range = set()
 def enter():
     global background_img, mario, blocks, items, enemies, attacks, effects
     background_img = load_image('Title_Img.png')
+    # 카메라 정보 가져오기
+    Global.camera.load_window_max('DataFolder/stage' + str(Global.play_stage_number) + '_camera.txt')
     # 마리오
     mario = Mario(100.0, 100.0)
     # 블럭
-    blocks = Load_blocks('stage' + str(Global.play_stage_number) + '_blocks.txt')
+    blocks = Load_blocks('DataFolder/stage' + str(Global.play_stage_number) + '_blocks.txt')
     # 아이템
     items = []
     # 적
@@ -105,6 +107,8 @@ def update():
     for item in items:
         item.update()
 
+    # 카메라 위치 설정
+    Global.camera.set_pos(mario.pos)
 
 def pause():
     pass

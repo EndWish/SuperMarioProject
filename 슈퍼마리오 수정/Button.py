@@ -115,7 +115,7 @@ def Init_stageButton_dfs(index, stageButtons, visit, stageNodeLines):
 def Load_stageButtons():
     stageButtons = []
     stageNodeLines = []
-    f = open('stage_buttons.txt', 'r', encoding='UTF8')
+    f = open('DataFolder/stage_buttons.txt', 'r', encoding='UTF8')
     f.readline()  # 첫줄 (설명라인) 제거
     while True:
         line = f.readline()

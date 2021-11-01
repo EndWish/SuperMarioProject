@@ -2,6 +2,7 @@ import time
 import pico2d
 import Global
 import constant
+from Camera import *
 
 
 class GameState:
@@ -28,6 +29,8 @@ def run(start_state):
     Global.pre_time = time.time()
     Global.delta_time = 0.01
     Global.load_images()
+
+    Global.camera = Camera()
 
     # 반복적으로 실행하기
     while running:
