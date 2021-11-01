@@ -75,7 +75,7 @@ class Mario:
         for block in check_blocks:
             play_state.add_collision_range(block.pos)
             col_xy = target_pos.collide_pos(block.pos)
-            if col_xy != (0, 0):
+            if col_xy != (0, 0) and not block.hidden:
                 target_pos.x -= col_xy[0]
                 self.speed = 0
                 break
@@ -95,7 +95,9 @@ class Mario:
             play_state.add_collision_range(block.pos)
             col_xy = target_pos.collide_pos(block.pos)
             if col_xy != (0, 0):
-                if self.v_speed <= 0 and (not block.hidden):   # 아래쪽 충돌 확인
+                if self.v_speed <= 0:   # 아래쪽 충돌 확인
+                    if block.hidden:
+                        continue
                     target_pos.y -= col_xy[1] + 1
                     self.v_speed = 0
                     self.landing = True
