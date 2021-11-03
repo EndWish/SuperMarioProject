@@ -206,7 +206,7 @@ class FireFlower(Item):
 
     def __init__(self, pos):
         super().__init__()
-        self.animator = OriginAnimation(Global.item_img, 0, 40, 18, 18, 50, 50, 4, 20, 0.05)
+        self.animator = OriginAnimation(Global.item_img, 0, 40, 18, 18, 50, 50, 3, 20, 0.1)
         self.pos = Position(float(pos.x), float(pos.y), 47, 47)
         self.mode = 0
         self.v_speed = 0
@@ -237,6 +237,55 @@ class FireFlower(Item):
             play_state.items.remove(self)
 
 
+class Coin(Item):
+    def item_number(self):
+        return 4
+
+    def __init__(self, pos):
+        super().__init__()
+        self.animator = OriginAnimation(Global.item_img, 0, 60, 11, 16, 33, 48, 6, 20, 0.05)
+        self.pos = Position(float(pos.x), float(pos.y), 33, 48)
+        self.mode = 0
+        self.v_speed = 0
+        self.life_time = 0.3
+
+        self.rise = 0
+
+    def update(self):
+        delta_time = Global.delta_time
+
+        if self.mode == 0:  # 블럭에서 생성되서 나타날때
+            self.v_speed = 800
+            self.pos.y += self.v_speed * delta_time
+            self.rise += self.v_speed * delta_time
+            if self.rise >= 50:
+                self.mode = 1
+
+        elif self.mode == 1:    # 일반적인 상황
+            self.base_move()
+            self.crash_mario()
+            self.life_time -= delta_time
+            if self.life_time <= 0:
+                play_state.score += 100
+                play_state.items.remove(self)
+
+    def base_move(self):
+        delta_time = Global.delta_time
+
+        # 낙하&점프
+        self.v_speed -= constant.mario_gravity * delta_time
+        if self.v_speed < constant.mario_min_v_speed:  # 낙하 최대속도 조정
+            self.v_speed = constant.mario_min_v_speed
+
+        self.pos.y += self.v_speed * delta_time
+
+    def crash_mario(self):
+        col_xy = self.pos.collide_pos(play_state.mario.pos)
+        if col_xy != (0, 0):
+            play_state.score += 100
+            play_state.items.remove(self)
+
+
 def make_item_from_block(number, block):
     if number == 1:
         return SuperMushroom(block.pos)
@@ -244,4 +293,5 @@ def make_item_from_block(number, block):
         return LifeUpMushroom(block.pos)
     elif number == 3:
         return FireFlower(block.pos)
-
+    elif number == 4:
+        return Coin(block.pos)

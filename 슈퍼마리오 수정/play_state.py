@@ -18,7 +18,7 @@ effects = []
 enemies = []
 attacks = []
 
-score = 0
+score = int()
 
 collisions_range = set()
 

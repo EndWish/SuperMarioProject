@@ -10,6 +10,7 @@ class Mario:
     def __init__(self, x, y):
         self.life = 3
         self.death = False
+        self.invincible = 0
         self.pos = Position(x, y, 46, 46)
         
         self.mode = 0
@@ -48,6 +49,10 @@ class Mario:
         ]
 
     def update(self):
+        delta_time = Global.delta_time
+
+        self.invincible -= delta_time
+
         if self.mode != self.change_mode:   # 변신중
             self.changing()
         else:
@@ -193,17 +198,36 @@ class Mario:
         if mode <= self.change_mode:
             if mode == 1:
                 # 추가 점수+
-                pass
+                play_state.score += 500
             elif mode == 2:
                 # 추가 점수+
-                pass
+                play_state.score += 1000
         # 업그래이드 될 수 있을경우
         else:
             self.change_mode = mode
+            self.set_invincible(1)
 
     def downgrage_change_mode(self):
+        if self.is_invincible():    # 무적일경우 아무것도 하지 않는다.
+            return
+        else:                       # 무적이 아닐경우
+            self.set_invincible(1)
+
+        # 진화 상태가 아닐때
         if self.mode == 0:
-            self.death = True
+            if self.life <= 0:
+                self.death = True
+            else:
+                self.life -= 1
+        # 진화 상태 일때
         else:
             self.change_mode = self.mode - 1
 
+    def is_invincible(self):
+        if self.invincible > 0:
+            return True
+        return False
+
+    def set_invincible(self, set_time):
+        if self.invincible < set_time:
+            self.invincible = set_time
