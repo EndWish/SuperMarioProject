@@ -24,7 +24,7 @@ collisions_range = set()
 
 def enter():
     global background_img, mario, blocks, items, enemies, attacks, effects
-    background_img = load_image('Title_Img.png')
+    background_img = load_image('ImageFolder/Title_Img.png')
     # 카메라 정보 가져오기
     Global.camera.load_window_max('DataFolder/stage' + str(Global.play_stage_number) + '_camera.txt')
     # 마리오

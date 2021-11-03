@@ -17,8 +17,8 @@ stageNodeLines = []
 
 def enter():
     global background_img, nodeLine_img, stageButtons, stageNodeLines, editButton
-    background_img = load_image('BackgroundMap_Img.png')
-    nodeLine_img = load_image('NodeLine_Img.png')
+    background_img = load_image('ImageFolder/BackgroundMap_Img.png')
+    nodeLine_img = load_image('ImageFolder/NodeLine_Img.png')
 
     Global.camera.set_window_max(0, 0, constant.screen_w, constant.screen_h)
     editButton = EditButton()

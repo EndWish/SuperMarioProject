@@ -15,8 +15,8 @@ image2_frame = 0
 
 def enter():
     global image, image2
-    image = load_image('Title_Img.png')
-    image2 = load_image('TitleSentence_Img.png')
+    image = load_image('ImageFolder/Title_Img.png')
+    image2 = load_image('ImageFolder/TitleSentence_Img.png')
 
 
 def exit():

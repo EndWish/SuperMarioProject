@@ -31,9 +31,14 @@ class Block:
         else:
             self.animator.image.opacify(1)
         self.animator.draw(self.pos.x, self.pos.y, '')
+        self.animator.image.opacify(1)
 
     def save(self):
         txt = "%d %d %d %d %d" % (self.block_number(), self.pos.x, self.pos.y, self.hidden, len(self.item_queue))
+        for item in self.item_queue:
+            txt += " " + str(item.item_number())
+
+        txt += '\n'
         return txt
 
 
@@ -80,12 +85,13 @@ class BounceBlock(Block):
         else:
             self.animator[motion].image.opacify(1)
         self.animator[motion].draw(self.pos.x, self.pos.y, '')
+        self.animator[motion].image.opacify(1)
 
     def heading(self):
         super(BounceBlock, self).heading()
         self.bounce = 0.15
         if len(self.item_queue) > 0:
-            play_state.items.append(  self.item_queue[0])
+            play_state.items.append(self.item_queue[0])
             self.item_queue.pop(0)
 
 
@@ -118,8 +124,6 @@ def Load_blocks(file_name):
 
     f.close()
     return blocks
-
-
 
 
 

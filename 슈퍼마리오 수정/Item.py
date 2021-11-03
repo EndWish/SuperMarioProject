@@ -68,7 +68,7 @@ class SuperMushroom(Item):
         for block in check_blocks:
             play_state.add_collision_range(block.pos)
             col_xy = target_pos.collide_pos(block.pos)
-            if col_xy != (0, 0):
+            if col_xy != (0, 0) and not block.hidden:
                 target_pos.x -= col_xy[0]
                 self.dir *= -1
 
@@ -87,14 +87,15 @@ class SuperMushroom(Item):
             play_state.add_collision_range(block.pos)
             col_xy = target_pos.collide_pos(block.pos)
             if col_xy != (0, 0):
-                if self.v_speed <= 0 and (not block.hidden):  # 아래쪽 충돌 확인
+                if self.v_speed:  # 아래쪽 충돌 확인
+                    if block.hidden:
+                        continue
                     target_pos.y -= col_xy[1] + 1
                     self.v_speed = 0
                     self.landing = True
                 else:  # 위쪽 충돌 확인
                     target_pos.y -= col_xy[1] - 1
                     self.v_speed = 0
-                    block.heading()
 
         self.pos.y = target_pos.y
         play_state.add_collision_range(target_pos)

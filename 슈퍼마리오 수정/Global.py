@@ -23,12 +23,12 @@ editButton_img = None
 
 def load_images():
     global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img
-    player_img = pico2d.load_image('Player_Img.png')
-    structure_img = pico2d.load_image('Structure_Img.png')
-    enemy_img = pico2d.load_image('EnemyImg.png')
-    item_img = pico2d.load_image('Item_Img.png')
-    stageButton_img = pico2d.load_image('StageButtons_Img.png')
-    editButton_img = pico2d.load_image('EditButton_Img.png')
+    player_img = pico2d.load_image('ImageFolder/Player_Img.png')
+    structure_img = pico2d.load_image('ImageFolder/Structure_Img.png')
+    enemy_img = pico2d.load_image('ImageFolder/EnemyImg.png')
+    item_img = pico2d.load_image('ImageFolder/Item_Img.png')
+    stageButton_img = pico2d.load_image('ImageFolder/StageButtons_Img.png')
+    editButton_img = pico2d.load_image('ImageFolder/EditButton_Img.png')
 
 
 

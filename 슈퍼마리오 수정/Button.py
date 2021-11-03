@@ -4,9 +4,10 @@ import pico2d
 import Global
 import constant
 from Position import *
+from Animation import *
+
 
 import play_state
-import edit_state
 import game_framework
 
 
@@ -51,6 +52,7 @@ class StageButton(Button):
         pass
 
     def onClick(self, mx, my):
+        import edit_state
         if super().onClick(mx, my):
             if Global.edit_mode:
                 Global.play_stage_number = self.stageNumber
@@ -80,6 +82,40 @@ class StageButton(Button):
                 Global.stageButton_img.clip_draw(200, 0, 195, 195, self.pos.x, self.pos.y, self.pos.w, self.pos.h)
             else:   # 흑백
                 Global.stageButton_img.clip_draw(0, 0, 195, 195, self.pos.x, self.pos.y, self.pos.w, self.pos.h)
+
+
+class EditBlockButton(Button):
+    def __init__(self, x, y, block_number, hidden):
+        super(EditBlockButton, self).__init__()
+        self.pos = Position(x, y, 50, 50)
+        self.init_pos = Position(x, y, 50, 50)
+        self.block_number = block_number
+        self.hidden = hidden
+        self.animator = [
+            None,
+            SingleIndexAnimation(Global.structure_img, 48, 16, 16, 16, 50, 50),  # 단단한 벽
+            SingleIndexAnimation(Global.structure_img, 0, 16, 16, 16, 50, 50),  # 바운스 벽돌
+        ]
+
+    def onClick(self, mx, my):
+        if super().onClick(mx, my):
+            import edit_state
+            edit_state.pushing_mode = edit_state.push_block  # 변수에 함수를 넣어준다.
+            edit_state.pushing_txt = "%d 0 0 %d 0" % (self.block_number, self.hidden)
+            return True
+        return False
+
+    def update(self):
+        self.pos.x = self.init_pos.x + Global.camera.left
+        self.pos.y = self.init_pos.y + Global.camera.bottom
+
+    def draw_edit(self):
+        if self.hidden:
+            self.animator[self.block_number].image.opacify(0.5)
+        else:
+            self.animator[self.block_number].image.opacify(1)
+        self.animator[self.block_number].draw(self.pos.x, self.pos.y, '')
+        self.animator[self.block_number].image.opacify(1)
 
 
 def CreateStageButton(pos, stage_num, clear, next_node):
@@ -140,6 +176,8 @@ def Load_stageButtons():
 
     f.close()
     return stageButtons, stageNodeLines
+
+
 
 
 
