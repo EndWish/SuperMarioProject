@@ -127,7 +127,9 @@ class EditItemButton(Button):
         self.item_number = item_number
         self.animator = [
             None,
-            SingleIndexAnimation(Global.item_img, 0, 0, 18, 18, 50, 50)     # 슈퍼 머쉬룸
+            SingleIndexAnimation(Global.item_img, 0, 0, 18, 18, 50, 50),    # 슈퍼 머쉬룸
+            SingleIndexAnimation(Global.item_img, 40, 0, 18, 18, 50, 50),   # 라이프 머쉬룸
+            SingleIndexAnimation(Global.item_img, 0, 40, 18, 18, 50, 50),   # 파이어 플라워
         ]
 
     def onClick(self, mx, my):

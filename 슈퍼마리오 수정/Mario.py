@@ -34,10 +34,16 @@ class Mario:
                 SingleIndexAnimation(Global.player_img, 120, 0, 18, 18, 50, 50),  # turn : 3
             ],
             [
-                SingleIndexAnimation(Global.player_img, 0, 20, 18, 36, 50, 100),  # idle : 0
-                SingleIndexAnimation(Global.player_img, 20, 20, 18, 36, 50, 100),  # jump : 1
-                OriginAnimation(Global.player_img, 40, 20, 18, 36, 50, 100, 4, 20, 0.05),  # run : 2
-                SingleIndexAnimation(Global.player_img, 120, 20, 18, 36, 50, 100),  # turn : 3
+                SingleIndexAnimation(Global.player_img, 0, 20, 18, 34, 50, 100),  # idle : 0
+                SingleIndexAnimation(Global.player_img, 20, 20, 18, 34, 50, 100),  # jump : 1
+                OriginAnimation(Global.player_img, 40, 20, 18, 34, 50, 100, 4, 20, 0.05),  # run : 2
+                SingleIndexAnimation(Global.player_img, 120, 20, 18, 34, 50, 100),  # turn : 3
+            ],
+            [
+                SingleIndexAnimation(Global.player_img, 0, 60, 18, 34, 50, 100),  # idle : 0
+                SingleIndexAnimation(Global.player_img, 20, 60, 18, 34, 50, 100),  # jump : 1
+                OriginAnimation(Global.player_img, 40, 60, 18, 34, 50, 100, 4, 20, 0.05),  # run : 2
+                SingleIndexAnimation(Global.player_img, 120, 60, 18, 34, 50, 100),  # turn : 3
             ],
         ]
 
@@ -182,20 +188,22 @@ class Mario:
     def add_dir(self, d):
         self.dir += d
 
-    def set_change_mode(self, mode):
-        if self.change_mode == mode == 1:
-            pass
-        elif self.change_mode == mode == 2:
-            pass
-        elif mode < 0:
-            # 죽음
-            self.death = True
-            pass
+    def upgrade_change_mode(self, mode):
+        # 이미 업그래이드 되어 있을 경우
+        if mode <= self.change_mode:
+            if mode == 1:
+                # 추가 점수+
+                pass
+            elif mode == 2:
+                # 추가 점수+
+                pass
+        # 업그래이드 될 수 있을경우
         else:
             self.change_mode = mode
 
-
-
-
-
+    def downgrage_change_mode(self):
+        if self.mode == 0:
+            self.death = True
+        else:
+            self.change_mode = self.mode - 1
 

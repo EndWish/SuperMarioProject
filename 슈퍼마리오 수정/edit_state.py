@@ -38,6 +38,8 @@ edit_obj_buttons = [
     ],
     [
         EditItemButton(25, constant.screen_h - 25, 1),
+        EditItemButton(75, constant.screen_h - 25, 2),
+        EditItemButton(125, constant.screen_h - 25, 3),
     ],
 ]
 
