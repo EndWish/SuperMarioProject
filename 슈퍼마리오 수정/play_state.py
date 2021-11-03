@@ -55,7 +55,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
-                game_framework.quit()
+                game_framework.pop_state()
+                break
             elif event.key == SDLK_RIGHT:
                 mario.add_dir(+1)
             elif event.key == SDLK_LEFT:

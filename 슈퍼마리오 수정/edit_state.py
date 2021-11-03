@@ -5,6 +5,8 @@ import constant
 from Mario import *
 from Block import *
 from Button import *
+from Item import *
+
 
 import game_framework
 from pico2d import *
@@ -31,6 +33,9 @@ edit_obj_buttons = [
         EditBlockButton(75, constant.screen_h - 25, 1, 1),
         EditBlockButton(125, constant.screen_h - 25, 2, 0),
         EditBlockButton(175, constant.screen_h - 25, 2, 1),
+    ],
+    [
+        EditItemButton(25, constant.screen_h - 25, 1),
     ],
 ]
 
@@ -101,8 +106,13 @@ def handle_events():
                 move_camera_center(0, -100)
             elif event.key == SDLK_d:
                 move_camera_center(+100, 0)
+            elif event.key == SDLK_BACKQUOTE:
+                edit_obj_kind = 0
+                pushing_mode = (lambda mx, my: 0)
             elif event.key == SDLK_1:
                 edit_obj_kind = 1
+            elif event.key == SDLK_2:
+                edit_obj_kind = 2
 
 
 def draw():
@@ -233,7 +243,6 @@ def save_blocks(file_name):
 def push_block(mx, my):
     global mouse_on_block, blocks
 
-    # print('push_block')
     new_block = load_block(pushing_txt)
     new_block.pos.x = (int(mx) // 50) * 50 + 25
     new_block.pos.y = (int(my) // 50) * 50 + 25
@@ -247,8 +256,16 @@ def push_block(mx, my):
     blocks.sort(key=lambda a: a.pos.x)
 
 
+def push_item(mx, my):
+    global mouse_on_block
+
+    if mouse_on_block is not None:
+        mouse_on_block.item_queue.append(make_item_from_block(int(pushing_txt), mouse_on_block))
+
+
 def pop_obj(mx, my):
     global mouse_on_block
     if mouse_on_block is not None:
         blocks.remove(mouse_on_block)
+        mouse_on_block = None
 

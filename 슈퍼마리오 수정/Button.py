@@ -118,6 +118,33 @@ class EditBlockButton(Button):
         self.animator[self.block_number].image.opacify(1)
 
 
+class EditItemButton(Button):
+    def __init__(self, x, y, item_number):
+        super(EditItemButton, self).__init__()
+        self.pos = Position(x, y, 50, 50)
+        self.init_pos = Position(x, y, 50, 50)
+        self.item_number = item_number
+        self.animator = [
+            None,
+            SingleIndexAnimation(Global.item_img, 0, 0, 18, 18, 50, 50)     # 슈퍼 머쉬룸
+        ]
+
+    def onClick(self, mx, my):
+        if super().onClick(mx, my):
+            import edit_state
+            edit_state.pushing_mode = edit_state.push_item  # 변수에 함수를 넣어준다.
+            edit_state.pushing_txt = "%d" % self.item_number
+            return True
+        return False
+
+    def update(self):
+        self.pos.x = self.init_pos.x + Global.camera.left
+        self.pos.y = self.init_pos.y + Global.camera.bottom
+
+    def draw_edit(self):
+        self.animator[self.item_number].draw(self.pos.x, self.pos.y, '')
+
+
 def CreateStageButton(pos, stage_num, clear, next_node):
     button = StageButton()
     button.setStageNumber(stage_num)
