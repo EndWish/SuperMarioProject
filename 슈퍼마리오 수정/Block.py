@@ -4,6 +4,7 @@ import math
 from Animation import *
 from Position import *
 from Item import *
+from Effect import *
 import play_state
 
 
@@ -95,6 +96,23 @@ class BounceBlock(Block):
             self.item_queue.pop(0)
 
 
+class BrickBlock(Block):
+    def block_number(self):
+        return 3
+
+    def __init__(self, pos, hidden=False):
+        super().__init__(pos, hidden)
+        self.animator = SingleIndexAnimation(Global.structure_img, 16, 16, 16, 16, 50, 50)  # 벽돌 블럭
+
+    def heading(self):
+        super().heading()
+        play_state.effects.append(WreckageEffect(self.pos))
+        play_state.blocks.remove(self)
+        # 이펙트 생성
+
+
+
+
 def load_block(txt):
     txt = list(map(int, txt.split()))
     if txt[0] == 1:
@@ -105,6 +123,8 @@ def load_block(txt):
         for i in range(txt[4]):
             block.item_queue.append(make_item_from_block(txt[5 + i], block))
         return block
+    elif txt[0] == 3:
+        return BrickBlock(Position(txt[1], txt[2], 50, 50), bool(txt[3]))
 
 
 def Load_blocks(file_name):

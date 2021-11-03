@@ -21,12 +21,12 @@ class SingleIndexAnimation(Animation):
         self.draw_w = draw_w
         self.draw_h = draw_h
 
-    def draw(self, x, y, flip):
+    def draw(self, x, y, flip, r=0):
         x -= Global.camera.left
         y -= Global.camera.bottom
 
         self.image.clip_composite_draw(self.img_x, self.img_y, self.img_w, self.img_h,
-                                       0, flip, x, y, self.draw_w, self.draw_h)
+                                       r, flip, x, y, self.draw_w, self.draw_h)
 
 
 class OriginAnimation(Animation):

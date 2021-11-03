@@ -95,6 +95,7 @@ class EditBlockButton(Button):
             None,
             SingleIndexAnimation(Global.structure_img, 48, 16, 16, 16, 50, 50),  # 단단한 벽
             SingleIndexAnimation(Global.structure_img, 0, 16, 16, 16, 50, 50),  # 바운스 벽돌
+            SingleIndexAnimation(Global.structure_img, 16, 16, 16, 16, 50, 50),  # 벽돌 블럭
         ]
 
     def onClick(self, mx, my):

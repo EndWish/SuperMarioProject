@@ -91,7 +91,8 @@ def draw():
     for item in items:
         item.draw()
     # 이펙트 그리기
-
+    for effect in effects:
+        effect.draw()
     # 공격 그리기
     
     # 충돌범위 그리기
@@ -107,6 +108,9 @@ def update():
 
     for item in items:
         item.update()
+
+    for effect in effects:
+        effect.update()
 
     # 카메라 위치 설정
     Global.camera.set_pos(mario.pos)
