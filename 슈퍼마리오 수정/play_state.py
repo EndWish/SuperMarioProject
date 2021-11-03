@@ -104,7 +104,7 @@ def draw():
 
 
 def update():
-    mario.move()
+    mario.update()
 
     for item in items:
         item.update()

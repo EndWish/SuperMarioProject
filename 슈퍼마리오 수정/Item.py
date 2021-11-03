@@ -109,6 +109,7 @@ class SuperMushroom(Item):
     def crash_mario(self):
         col_xy = self.pos.collide_pos(play_state.mario.pos)
         if col_xy != (0, 0):
+            play_state.mario.set_change_mode(1)
             play_state.items.remove(self)
             print('eat!')
 

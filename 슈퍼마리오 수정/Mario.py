@@ -9,7 +9,9 @@ class Mario:
 
     def __init__(self, x, y):
         self.life = 3
+        self.death = False
         self.pos = Position(x, y, 46, 46)
+        
         self.mode = 0
 
         self.dir = 0  # 방향키를 눌렀는지 (1 = right 키, -1 = left 키)
@@ -38,6 +40,38 @@ class Mario:
                 SingleIndexAnimation(Global.player_img, 120, 20, 18, 36, 50, 100),  # turn : 3
             ],
         ]
+
+    def update(self):
+        if self.mode != self.change_mode:   # 변신중
+            self.changing()
+        else:
+            self.move()
+
+    def changing(self):
+        delta_time = Global.delta_time
+
+        # 시작할때
+        if self.change_time == 100:
+            if self.change_mode == 1 or self.change_mode == 2:
+                self.pos.h = 46 * 2
+            else:
+                self.pos.h = 46
+            self.move()
+
+        if self.mode < self.change_mode:  # 강화 변신
+            self.change_time -= 100 * delta_time
+            if (self.change_time // 20) % 2 == 0:
+                self.draw_mode = self.mode
+            else:
+                self.draw_mode = self.change_mode
+        else:  # 약화 변신
+            self.change_time = 0
+
+        # 변신이 끝나면
+        if self.change_time <= 0:
+            self.mode = self.change_mode
+            self.draw_mode = self.change_mode
+            self.change_time = 100
 
     def move(self):
         # 움직일수 없는 조건을 함수로 제공하여 리턴
@@ -140,12 +174,25 @@ class Mario:
             self.v_speed = 1500
 
     def draw(self):
+        # 변신 상태일때
+        if self.mode != self.change_mode:
+            self.motion = 1
         self.animator[self.draw_mode][self.motion].draw(self.pos.x, self.pos.y, self.flip)
 
     def add_dir(self, d):
         self.dir += d
 
-
+    def set_change_mode(self, mode):
+        if self.change_mode == mode == 1:
+            pass
+        elif self.change_mode == mode == 2:
+            pass
+        elif mode < 0:
+            # 죽음
+            self.death = True
+            pass
+        else:
+            self.change_mode = mode
 
 
 
