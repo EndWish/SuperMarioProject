@@ -6,6 +6,7 @@ from Mario import *
 from Block import *
 from Button import *
 from Item import *
+from Enemy import *
 
 
 import game_framework
@@ -42,6 +43,9 @@ edit_obj_buttons = [
         EditItemButton(125, constant.screen_h - 25, 3),
         EditItemButton(175, constant.screen_h - 25, 4),
     ],
+    [
+        EditEnemyButton(25, constant.screen_h - 25, 1),
+    ],
 ]
 
 def enter():
@@ -57,7 +61,7 @@ def enter():
     # 블럭
     blocks = Load_blocks('DataFolder/stage' + str(Global.play_stage_number) + '_blocks.txt')
     # 적
-    enemies = []
+    enemies = Load_enemies('DataFolder/stage' + str(Global.play_stage_number) + '_enemies.txt')
 
     #
 
@@ -103,6 +107,7 @@ def handle_events():
                 break
             elif event.key == SDLK_p:
                 save_blocks('DataFolder/stage' + str(Global.play_stage_number) + '_blocks.txt')
+                save_enemies('DataFolder/stage' + str(Global.play_stage_number) + '_enemies.txt')
             elif event.key == SDLK_w:
                 move_camera_center(0, +100)
             elif event.key == SDLK_a:
@@ -118,10 +123,12 @@ def handle_events():
                 edit_obj_kind = 1
             elif event.key == SDLK_2:
                 edit_obj_kind = 2
+            elif event.key == SDLK_3:
+                edit_obj_kind = 3
 
 
 def draw():
-    global background_img, mario, blocks, edit_obj_buttons
+    global background_img, mario, blocks, edit_obj_buttons, enemies
     clear_canvas()
     # 배경 그리기
     background_img.draw(constant.screen_w // 2, constant.screen_h // 2, constant.screen_w, constant.screen_h)
@@ -129,7 +136,8 @@ def draw():
     for block in blocks:
         block.draw_edit()
     # 적 그리기
-
+    for enemy in enemies:
+        enemy.draw_edit()
     # 마리오 그리기
     mario.draw()
     # 아이템 그리기
@@ -186,6 +194,16 @@ def search_mouse_on_block(mx, my):
             break
 
 
+def search_mouse_on_enemies(mx, my):
+    mouse_on_enemies = []
+
+    for enemy in enemies:
+        if enemy.pos.y - enemy.pos.h / 2 <= my <= enemy.pos.y + enemy.pos.h / 2 and enemy.pos.x - enemy.pos.w / 2 <= mx <= enemy.pos.x + enemy.pos.w / 2:
+            mouse_on_enemies.append(enemy)
+
+    return mouse_on_enemies
+
+
 def get_check_blocks(mx, my):
     global blocks
 
@@ -231,7 +249,7 @@ def move_camera_center(x, y):
 def save_blocks(file_name):
     global blocks
     f = open(file_name, 'w', encoding='UTF8')
-    f.write("(첫줄은 카메라 영역) 블럭(클래스)의 종류, x, y, hidden, item_num, 아이템들....저장\n")
+    f.write("블럭(클래스)의 종류, x, y, hidden, item_num, 아이템들....저장\n")
 
     # 블럭리스트 정렬
     blocks.sort(key=lambda a: a.pos.x)
@@ -242,7 +260,19 @@ def save_blocks(file_name):
 
     # 블럭리스트 x 좌표로 정렬
     f.close()
-    return blocks
+
+
+def save_enemies(file_name):
+    global enemies
+    f = open(file_name, 'w', encoding='UTF8')
+    f.write("적(클래스)의 종류, x, y\n")
+
+    # 블럭리스트 저장
+    for enemy in enemies:
+        f.write(enemy.save())
+
+    # 블럭리스트 x 좌표로 정렬
+    f.close()
 
 
 def push_block(mx, my):
@@ -268,9 +298,24 @@ def push_item(mx, my):
         mouse_on_block.item_queue.append(make_item_from_block(int(pushing_txt), mouse_on_block))
 
 
+def push_enemy(mx, my):
+    global enemies
+
+    new_enemy = load_enemy(pushing_txt)
+    new_enemy.pos.x = int(mx)
+    new_enemy.pos.y = int(my)
+    enemies.append(new_enemy)
+    pass
+
+
 def pop_obj(mx, my):
     global mouse_on_block
+    # 블럭 삭제
     if mouse_on_block is not None:
         blocks.remove(mouse_on_block)
         mouse_on_block = None
 
+    # 적 삭제
+    delete_enemies = search_mouse_on_enemies(mx, my)
+    for enemy in delete_enemies:
+        enemies.remove(enemy)

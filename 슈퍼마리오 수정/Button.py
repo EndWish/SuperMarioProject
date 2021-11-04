@@ -149,6 +149,32 @@ class EditItemButton(Button):
         self.animator[self.item_number].draw(self.pos.x, self.pos.y, '')
 
 
+class EditEnemyButton(Button):
+    def __init__(self, x, y, enemy_number):
+        super(EditEnemyButton, self).__init__()
+        self.pos = Position(x, y, 50, 50)
+        self.init_pos = Position(x, y, 50, 50)
+        self.enemy_number = enemy_number
+        self.animator = [
+            None,
+            SingleIndexAnimation(Global.enemy_img, 0, 0, 18, 18, 50, 50),  # 굼바
+        ]
+
+    def onClick(self, mx, my):
+        if super().onClick(mx, my):
+            import edit_state
+            edit_state.pushing_mode = edit_state.push_enemy  # 변수에 함수를 넣어준다.
+            edit_state.pushing_txt = "%d 0 0" % self.enemy_number
+            return True
+        return False
+
+    def update(self):
+        self.pos.x = self.init_pos.x + Global.camera.left
+        self.pos.y = self.init_pos.y + Global.camera.bottom
+
+    def draw_edit(self):
+        self.animator[self.enemy_number].draw(self.pos.x, self.pos.y, '')
+
 def CreateStageButton(pos, stage_num, clear, next_node):
     button = StageButton()
     button.setStageNumber(stage_num)
