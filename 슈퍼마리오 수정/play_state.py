@@ -2,6 +2,7 @@ import Global
 import constant
 from Mario import *
 from Block import *
+from Enemy import *
 
 import game_framework
 from pico2d import *
@@ -34,7 +35,7 @@ def enter():
     # 아이템
     items = []
     # 적
-    enemies = []
+    enemies = Load_enemies('DataFolder/stage' + str(Global.play_stage_number) + '_enemies.txt')
 
     # 그 외
     attacks = []
@@ -84,7 +85,8 @@ def draw():
     for block in blocks:
         block.draw()
     # 적 그리기
-    
+    for enemy in enemies:
+        enemy.draw()
     # 마리오 그리기
     mario.draw()
     # 아이템 그리기
@@ -104,6 +106,9 @@ def draw():
 
 
 def update():
+    for enemy in enemies:
+        enemy.update()
+
     mario.update()
 
     for item in items:

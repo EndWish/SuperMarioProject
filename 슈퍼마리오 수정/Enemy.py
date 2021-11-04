@@ -1,3 +1,5 @@
+import random
+
 import Global
 import constant
 from Animation import *
@@ -42,12 +44,13 @@ class Goomba(Enemy):
         super().__init__()
         self.animator = OriginAnimation(Global.enemy_img, 0, 0, 18, 18, 50, 50, 2, 20, 0.5)
         self.pos = Position(float(pos.x), float(pos.y), 47, 47)
-        self.dir = 0
+        self.dir = (-1, 1)[random.randint(0, 1)]
         self.speed = 150
         self.v_speed = 0
         self.landing = False
 
     def update(self):
+        self.move()
         pass
 
     def move(self):
