@@ -158,6 +158,7 @@ class EditEnemyButton(Button):
         self.animator = [
             None,
             SingleIndexAnimation(Global.enemy_img, 0, 0, 18, 18, 50, 50),  # 굼바
+            OriginAnimation(Global.enemy_img, 0, 20, 18, 27, 50, 50, 2, 20, 0.5),  # 트루파(엉금엉금)
         ]
 
     def onClick(self, mx, my):

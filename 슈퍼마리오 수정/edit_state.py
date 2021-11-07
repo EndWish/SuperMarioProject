@@ -45,12 +45,13 @@ edit_obj_buttons = [
     ],
     [
         EditEnemyButton(25, constant.screen_h - 25, 1),
+        EditEnemyButton(75, constant.screen_h - 25, 2),
     ],
 ]
 
 def enter():
     global background_img, mario, blocks, enemies, window_points, camera_center, edit_obj_buttons
-    background_img = load_image('ImageFolder/Title_Img.png')
+    background_img = load_image('ImageFolder/Background1_1_Img.png')
     # 카메라 정보 가져오기
     camera_center = Position(constant.screen_w/2, constant.screen_h/2, 0, 0)
     Global.camera.load_window_max('DataFolder/stage' + str(Global.play_stage_number) + '_camera.txt')
@@ -131,7 +132,18 @@ def draw():
     global background_img, mario, blocks, edit_obj_buttons, enemies
     clear_canvas()
     # 배경 그리기
-    background_img.draw(constant.screen_w // 2, constant.screen_h // 2, constant.screen_w, constant.screen_h)
+    bg_h = (Global.camera.top_max - 100) - (Global.camera.bottom_min + 100)
+    bg_w = bg_h * 512 / 432
+
+    draw_y = Global.camera.bottom_min + 100
+    draw_x = Global.camera.left_min + 100
+
+    while draw_x < Global.camera.right_max - 100:
+        if Global.camera.left <= draw_x + bg_w and draw_x <= Global.camera.right:
+            background_img.draw_to_origin(draw_x - Global.camera.left, draw_y - Global.camera.bottom, bg_w, bg_h)
+        draw_x += bg_w
+
+
     # 블럭 그리기
     for block in blocks:
         block.draw_edit()

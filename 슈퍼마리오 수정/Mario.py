@@ -189,10 +189,11 @@ class Mario:
             col_xy = self.pos.collide_pos(enemy.pos)
             if col_xy != (0, 0):    # 충돌 했을 경우
                 if -20 < col_xy[1] < 0:
-                    # 위에서 밟았을 경우
-                    self.v_speed = 1000
-                    enemy.attacked(1)
-                    pass
+                    if self.v_speed < 0:
+                        # 위에서 밟았을 경우
+                        self.v_speed = 1000
+                        enemy.attacked(1)
+                        pass
                 else:
                     # 적에게 맞을 경우
                     self.speed, self.v_speed = col_xy[0] * -250, col_xy[1] * -20

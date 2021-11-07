@@ -25,7 +25,7 @@ collisions_range = set()
 
 def enter():
     global background_img, mario, blocks, items, enemies, attacks, effects
-    background_img = load_image('ImageFolder/Title_Img.png')
+    background_img = load_image('ImageFolder/Background1_1_Img.png')
     # 카메라 정보 가져오기
     Global.camera.load_window_max('DataFolder/stage' + str(Global.play_stage_number) + '_camera.txt')
     # 마리오
@@ -80,7 +80,17 @@ def draw():
     global background_img, mario, blocks
     clear_canvas()
     # 배경 그리기
-    background_img.draw(constant.screen_w // 2, constant.screen_h // 2, constant.screen_w, constant.screen_h)
+    bg_h = Global.camera.top_max - Global.camera.bottom_min
+    bg_w = bg_h * 512 / 432
+
+    draw_y = Global.camera.bottom_min
+    draw_x = Global.camera.left_min
+
+    while draw_x < Global.camera.right_max:
+        if Global.camera.left <= draw_x + bg_w and draw_x <= Global.camera.right:
+            background_img.draw_to_origin(draw_x - Global.camera.left, draw_y - Global.camera.bottom, bg_w, bg_h)
+        draw_x += bg_w
+
     # 블럭 그리기
     for block in blocks:
         block.draw()
