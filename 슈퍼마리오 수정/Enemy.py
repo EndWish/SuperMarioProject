@@ -31,6 +31,14 @@ class Enemy:
     def update(self):
         pass
 
+    def death(self):
+        play_state.enemies.remove(self)
+
+    def attacked(self, dmg):
+        self.life -= dmg
+        if self.life <= 0:
+            self.death()
+
     def save(self):
         txt = "%d %d %d\n" % (self.enemy_number(), self.pos.x, self.pos.y)
         return txt
@@ -42,6 +50,7 @@ class Goomba(Enemy):
 
     def __init__(self, pos):
         super().__init__()
+        self.life = 1
         self.animator = OriginAnimation(Global.enemy_img, 0, 0, 18, 18, 50, 50, 2, 20, 0.5)
         self.pos = Position(float(pos.x), float(pos.y), 47, 47)
         self.dir = (-1, 1)[random.randint(0, 1)]
@@ -55,6 +64,17 @@ class Goomba(Enemy):
 
     def move(self):
         delta_time = Global.delta_time
+
+        # 떨어지는 곳인지 확인
+        under_pos = Position(self.pos.x + self.dir * (self.pos.w / 2 + 10), self.pos.y - self.pos.h/2 - 10, 1, 1)
+        check_blocks = play_state.get_check_blocks(under_pos)
+        under_non_exist = True
+        for block in check_blocks:
+            col_xy = under_pos.collide_pos(block.pos)
+            if col_xy != (0, 0) and not block.hidden:
+                under_non_exist = False
+        if under_non_exist:
+            self.dir *= -1
 
         # 좌우 이동
         target_pos = Position(self.pos.x + self.speed * self.dir * delta_time, self.pos.y, self.pos.w, self.pos.h)
@@ -101,6 +121,11 @@ class Goomba(Enemy):
             self.flip = ''
         elif self.speed < 0 and self.flip == '':
             self.flip = 'h'
+
+    def death(self):
+        play_state.score += 150
+        super().death()  # 자신을 삭제한다.
+
 
 
 def load_enemy(txt):

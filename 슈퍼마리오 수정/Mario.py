@@ -58,6 +58,8 @@ class Mario:
         else:
             self.move()
 
+        self.crash_enemies()
+
     def changing(self):
         delta_time = Global.delta_time
 
@@ -131,6 +133,8 @@ class Mario:
         self.v_speed -= constant.mario_gravity * delta_time
         if self.v_speed < constant.mario_min_v_speed:  # 낙하 최대속도 조정
             self.v_speed = constant.mario_min_v_speed
+        elif self.v_speed > -constant.mario_min_v_speed:  # 점프 최대속도 조정
+            self.v_speed = -constant.mario_min_v_speed
 
         target_pos = Position(self.pos.x, self.pos.y + self.v_speed * delta_time, self.pos.w, self.pos.h + 2)
         check_blocks = play_state.get_check_blocks(target_pos)
@@ -180,6 +184,28 @@ class Mario:
         else:
             self.motion = 1
 
+    def crash_enemies(self):
+        for enemy in play_state.enemies:
+            col_xy = self.pos.collide_pos(enemy.pos)
+            if col_xy != (0, 0):    # 충돌 했을 경우
+                if -20 < col_xy[1] < 0:
+                    # 위에서 밟았을 경우
+                    self.v_speed = 1000
+                    enemy.attacked(1)
+                    pass
+                else:
+                    # 적에게 맞을 경우
+                    self.speed, self.v_speed = col_xy[0] * -250, col_xy[1] * -20
+                    if self.is_invincible():
+                        # 무적인 경우
+                        pass
+                    else:
+                        # 무적이 아닌데, 적에게 맞을경우
+                        self.downgrage_change_mode()
+                        pass
+                break
+
+
     def jump(self):
         if self.landing:
             self.v_speed = 1500
@@ -188,7 +214,13 @@ class Mario:
         # 변신 상태일때
         if self.mode != self.change_mode:
             self.motion = 1
+        # 무적 상태일때
+        if self.is_invincible():
+            if self.invincible // 0.1 % 2 == 0:
+                self.animator[self.draw_mode][self.motion].image.opacify(0.5)
+
         self.animator[self.draw_mode][self.motion].draw(self.pos.x, self.pos.y, self.flip)
+        self.animator[self.draw_mode][self.motion].image.opacify(1)
 
     def add_dir(self, d):
         self.dir += d
@@ -211,7 +243,7 @@ class Mario:
         if self.is_invincible():    # 무적일경우 아무것도 하지 않는다.
             return
         else:                       # 무적이 아닐경우
-            self.set_invincible(1)
+            self.set_invincible(0.4)
 
         # 진화 상태가 아닐때
         if self.mode == 0:
