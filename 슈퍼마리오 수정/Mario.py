@@ -33,6 +33,7 @@ class Mario:
                 SingleIndexAnimation(Global.player_img, 20, 0, 18, 18, 50, 50),  # jump : 1
                 OriginAnimation(Global.player_img, 40, 0, 18, 18, 50, 50, 4, 20, 0.05),  # run : 2
                 SingleIndexAnimation(Global.player_img, 120, 0, 18, 18, 50, 50),  # turn : 3
+                SingleIndexAnimation(Global.player_img, 140, 0, 18, 18, 50, 50),  # die : 4
             ],
             [
                 SingleIndexAnimation(Global.player_img, 0, 20, 18, 34, 50, 100),  # idle : 0
@@ -48,8 +49,23 @@ class Mario:
             ],
         ]
 
+        # 죽을때 표현을 위한 변수
+        self.die_rise = 1000
+
     def update(self):
         delta_time = Global.delta_time
+
+        # 바닥으로 떨어졌을경우 (죽음)
+        if self.pos.y <= -1000:
+            self.death = True
+
+        # 목숨이 다했을경우
+        if self.life <= 0:
+            self.motion = 4
+            self.pos.y += self.die_rise * delta_time
+            self.die_rise -= 2000 * delta_time
+            self.invincible = 0
+            return
 
         self.invincible -= delta_time
 

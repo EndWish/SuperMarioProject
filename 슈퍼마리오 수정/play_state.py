@@ -5,6 +5,7 @@ from Block import *
 from Enemy import *
 
 import game_framework
+import gameover_state
 from pico2d import *
 
 
@@ -129,6 +130,10 @@ def update():
 
     # 카메라 위치 설정
     Global.camera.set_pos(mario.pos)
+
+    if mario.death:
+        game_framework.push_state(gameover_state)
+        return
 
 def pause():
     pass
