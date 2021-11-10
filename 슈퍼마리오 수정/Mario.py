@@ -1,5 +1,6 @@
 import Global
 import constant
+import game_framework
 import play_state
 from Position import *
 from Animation import *
@@ -10,6 +11,7 @@ class Mario:
     def __init__(self, x, y):
         self.life = 3
         self.death = False
+        self.clear = False
         self.invincible = 0
         self.pos = Position(x, y, 46, 46)
         
@@ -54,6 +56,15 @@ class Mario:
 
     def update(self):
         delta_time = Global.delta_time
+
+        # 깃발을 잡았을 경우
+        col_xy = self.pos.collide_pos(play_state.flag.col_pos)
+        if col_xy != (0, 0):
+            if self.pos.y > play_state.flag.pos.y:
+                self.pos.y -= 100 * delta_time
+            else:
+                self.clear = True
+            return
 
         # 바닥으로 떨어졌을경우 (죽음)
         if self.pos.y <= -1000:

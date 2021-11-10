@@ -7,6 +7,7 @@ from Block import *
 from Button import *
 from Item import *
 from Enemy import *
+from Structure import *
 
 
 import game_framework
@@ -18,6 +19,8 @@ background_img = None
 mario = None
 blocks = None
 enemies = None
+structures = None
+flag = None
 
 mouse_on_block = None
 window_points = tuple()
@@ -47,10 +50,13 @@ edit_obj_buttons = [
         EditEnemyButton(25, constant.screen_h - 25, 1),
         EditEnemyButton(75, constant.screen_h - 25, 2),
     ],
+    [
+        EditStructureButton(25, constant.screen_h - 25, 1),
+    ],
 ]
 
 def enter():
-    global background_img, mario, blocks, enemies, window_points, camera_center, edit_obj_buttons
+    global background_img, mario, blocks, enemies, structures, flag, window_points, camera_center, edit_obj_buttons
     background_img = load_image('ImageFolder/Background1_1_Img.png')
     # 카메라 정보 가져오기
     camera_center = Position(constant.screen_w/2, constant.screen_h/2, 0, 0)
@@ -63,15 +69,15 @@ def enter():
     blocks = Load_blocks('DataFolder/stage' + str(Global.play_stage_number) + '_blocks.txt')
     # 적
     enemies = Load_enemies('DataFolder/stage' + str(Global.play_stage_number) + '_enemies.txt')
-
-    #
-
-
+    # 구조물
+    structures = Load_structures('DataFolder/stage' + str(Global.play_stage_number) + '_structures.txt')
+    # 깃발
+    flag = structures[0]
 
 def exit():
-    global background_img, mario, blocks, enemies, window_points, camera_center
+    global background_img, mario, blocks, enemies, structures, window_points, camera_center
     # 파일에 저장하기
-    del background_img, mario, blocks, enemies, window_points, camera_center
+    del background_img, mario, blocks, enemies, structures, window_points, camera_center
 
 
 def handle_events():
@@ -109,6 +115,7 @@ def handle_events():
             elif event.key == SDLK_p:
                 save_blocks('DataFolder/stage' + str(Global.play_stage_number) + '_blocks.txt')
                 save_enemies('DataFolder/stage' + str(Global.play_stage_number) + '_enemies.txt')
+                save_structures('DataFolder/stage' + str(Global.play_stage_number) + '_structures.txt')
             elif event.key == SDLK_w:
                 move_camera_center(0, +100)
             elif event.key == SDLK_a:
@@ -126,6 +133,8 @@ def handle_events():
                 edit_obj_kind = 2
             elif event.key == SDLK_3:
                 edit_obj_kind = 3
+            elif event.key == SDLK_4:
+                edit_obj_kind = 4
 
 
 def draw():
@@ -160,6 +169,10 @@ def draw():
     # 이펙트 그리기
 
     # 공격 그리기
+
+    # 구조물 그리기
+    for structure in structures:
+        structure.draw()
 
     # 충돌범위 그리기
     draw_rectangle(window_points[0] - Global.camera.left, window_points[1] - Global.camera.bottom, window_points[2] - Global.camera.left, window_points[3] - Global.camera.bottom)
@@ -214,6 +227,18 @@ def search_mouse_on_enemies(mx, my):
             mouse_on_enemies.append(enemy)
 
     return mouse_on_enemies
+
+
+def search_mouse_on_structures(mx, my):
+    mouse_on_structures = []
+
+    for structure in structures:
+        if type(structure) == Flag:
+            continue
+        if structure.pos.y - structure.pos.h / 2 <= my <= structure.pos.y + structure.pos.h / 2 and structure.pos.x - structure.pos.w / 2 <= mx <= structure.pos.x + structure.pos.w / 2:
+            mouse_on_structures.append(structure)
+
+    return mouse_on_structures
 
 
 def get_check_blocks(mx, my):
@@ -274,6 +299,18 @@ def save_blocks(file_name):
     f.close()
 
 
+def save_structures(file_name):
+    global structures
+    f = open(file_name, 'w', encoding='UTF8')
+    f.write("블럭(클래스)의 종류, x, y, hidden, item_num, 아이템들....저장\n")
+
+    # 구조물 리스트 저장
+    for structure in structures:
+        f.write(structure.save())
+
+    f.close()
+
+
 def save_enemies(file_name):
     global enemies
     f = open(file_name, 'w', encoding='UTF8')
@@ -301,6 +338,19 @@ def push_block(mx, my):
     # print('블럭 삽입완료')
     blocks.append(new_block)
     blocks.sort(key=lambda a: a.pos.x)
+
+
+def push_structure(mx, my):
+    global structures
+
+    new_structure = load_structure(pushing_txt)
+    new_structure.pos.x = (int(mx) // 50) * 50 + 25
+    new_structure.pos.y = (int(my) // 50) * 50 + 25
+
+    if type(new_structure) == Flag:
+        structures[0] = new_structure
+    else:
+        structures.append(new_structure)
 
 
 def push_item(mx, my):
@@ -331,3 +381,8 @@ def pop_obj(mx, my):
     delete_enemies = search_mouse_on_enemies(mx, my)
     for enemy in delete_enemies:
         enemies.remove(enemy)
+
+    # 구조물 삭제
+    delete_structures = search_mouse_on_structures(mx, my)
+    for structure in delete_structures:
+        structures.remove(structure)

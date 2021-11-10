@@ -3,9 +3,11 @@ import constant
 from Mario import *
 from Block import *
 from Enemy import *
+from Structure import *
 
 import game_framework
 import gameover_state
+import clear_state
 from pico2d import *
 
 
@@ -19,13 +21,15 @@ items = []
 effects = []
 enemies = []
 attacks = []
+structures = []
+flag = None
 
 score = int()
 
 collisions_range = set()
 
 def enter():
-    global background_img, mario, blocks, items, enemies, attacks, effects
+    global background_img, mario, blocks, items, enemies, attacks, effects, structures, flag
     background_img = load_image('ImageFolder/Background1_1_Img.png')
     # 카메라 정보 가져오기
     Global.camera.load_window_max('DataFolder/stage' + str(Global.play_stage_number) + '_camera.txt')
@@ -37,6 +41,10 @@ def enter():
     items = []
     # 적
     enemies = Load_enemies('DataFolder/stage' + str(Global.play_stage_number) + '_enemies.txt')
+    # 구조물
+    structures = Load_structures('DataFolder/stage' + str(Global.play_stage_number) + '_structures.txt')
+    # 깃발
+    flag = structures[0]
 
     # 그 외
     attacks = []
@@ -44,8 +52,8 @@ def enter():
 
 
 def exit():
-    global background_img, mario, blocks, items, effects, enemies, attacks
-    del background_img, mario, blocks, items, effects, enemies, attacks
+    global background_img, mario, blocks, items, effects, enemies, attacks, flag
+    del background_img, mario, blocks, items, effects, enemies, attacks, flag
 
 
 def handle_events():
@@ -107,6 +115,10 @@ def draw():
     for effect in effects:
         effect.draw()
     # 공격 그리기
+
+    # 구조물 그리기
+    for structure in structures:
+        structure.draw()
     
     # 충돌범위 그리기
     for collision in collisions_range:
@@ -130,9 +142,15 @@ def update():
 
     # 카메라 위치 설정
     Global.camera.set_pos(mario.pos)
-
+    
+    # 게임 오버
     if mario.death:
         game_framework.push_state(gameover_state)
+        return
+
+    # 게임 클리어
+    if mario.clear:
+        game_framework.push_state(clear_state)
         return
 
 def pause():

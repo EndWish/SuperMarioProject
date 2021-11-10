@@ -5,14 +5,14 @@ import game_framework
 from pico2d import *
 
 
-name = "GameoverState"
+name = "ClearState"
 image = None
 image_alpha = 0
 
 
 def enter():
     global image, image_alpha
-    image = load_image('ImageFolder/GameOver_Img.png')
+    image = load_image('ImageFolder/Clear_Img.png')
     image_alpha = 0
 
 def exit():
@@ -33,7 +33,6 @@ def handle_events():
 def draw():
     global image
     clear_canvas()
-    # game_framework.stack[-2].draw()
     image.draw(constant.screen_w // 2, constant.screen_h // 2, constant.screen_w, constant.screen_h)
     update_canvas()
 
@@ -44,6 +43,7 @@ def update():
     image.opacify(min(image_alpha, 1.0))
 
     if image_alpha > 2.5:
+        # 스테이지 클리어로 바꾸기
         game_framework.pop_state()
         game_framework.pop_state()
         return
