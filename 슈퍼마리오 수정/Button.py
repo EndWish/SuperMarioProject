@@ -3,6 +3,7 @@ import math
 import pico2d
 import Global
 import constant
+import map_state
 from Position import *
 from Animation import *
 
@@ -70,6 +71,11 @@ class StageButton(Button):
 
     def setCanPlay(self, value=True):
         self.canPlay = value
+
+    def clear_stage(self):
+        self.setClear()
+        for next_node_num in self.next_node:
+            map_state.stageButtons[next_node_num].setCanPlay()
 
     def setPos(self, pos):
         self.pos = pos

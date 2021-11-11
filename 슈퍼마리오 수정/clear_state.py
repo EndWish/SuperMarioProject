@@ -4,6 +4,7 @@ import constant
 import game_framework
 from pico2d import *
 
+import map_state
 
 name = "ClearState"
 image = None
@@ -44,6 +45,7 @@ def update():
 
     if image_alpha > 2.5:
         # 스테이지 클리어로 바꾸기
+        map_state.stageButtons[Global.play_stage_number].clear_stage()
         game_framework.pop_state()
         game_framework.pop_state()
         return
