@@ -20,10 +20,11 @@ item_img = None
 stageButton_img = None
 editButton_img = None
 attack_img = None
+numbers_img = None
 
 
 def load_images():
-    global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img
+    global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img, numbers_img
     player_img = pico2d.load_image('ImageFolder/Player_Img.png')
     structure_img = pico2d.load_image('ImageFolder/Structure_Img.png')
     enemy_img = pico2d.load_image('ImageFolder/Enemy_Img.png')
@@ -31,8 +32,9 @@ def load_images():
     stageButton_img = pico2d.load_image('ImageFolder/StageButtons_Img.png')
     editButton_img = pico2d.load_image('ImageFolder/EditButton_Img.png')
     attack_img = pico2d.load_image('ImageFolder/Attack_Img.png')
+    numbers_img = pico2d.load_image('ImageFolder/Numbers_Img.png')
 
 
 def del_images():
-    global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img
-    del player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img
+    global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img, numbers_img
+    del player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img, numbers_img

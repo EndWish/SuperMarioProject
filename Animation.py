@@ -1,4 +1,8 @@
 import time
+import math
+
+import pico2d
+
 import Global
 
 
@@ -59,4 +63,15 @@ class OriginAnimation(Animation):
                                        0, flip, x, y, self.draw_w, self.draw_h)
 
 
+def print_numbers(numbers, x, y, size):
+    numbers = int(numbers)
+
+    digit = 1
+    if numbers > 0:
+        digit = int(math.log10(numbers)) + 1
+
+    for i in range(digit - 1, -1, -1):
+        number = numbers % 10     # 그 자리의 숫자 구하고
+        numbers //= 10     # 일의 자리 삭제
+        Global.numbers_img.clip_draw(300 * number, 0, 300, 400, x + size * i, y, size, size * 4/3)
 

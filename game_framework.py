@@ -34,7 +34,7 @@ def run(start_state):
 
     # 반복적으로 실행하기
     while running:
-        if Global.delta_time <= 0.2:    # 프레임 드랍이 너무 심할때 정상화될때 까지 멈춤
+        if Global.delta_time <= 0.1:    # 프레임 드랍이 너무 심할때 정상화될때 까지 멈춤
 
             stack[-1].handle_events()
             stack[-1].update()

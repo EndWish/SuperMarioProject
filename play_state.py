@@ -128,6 +128,9 @@ def draw():
         collision.draw_collision_rect()
     collisions_range.clear()
 
+    # UI그리기
+    print_numbers(score, constant.screen_w - 150, constant.screen_h - 30, 30)
+
     update_canvas()
 
 

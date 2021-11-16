@@ -1,5 +1,8 @@
 import Global
 import constant
+import play_state
+
+from Animation import print_numbers
 
 import game_framework
 from pico2d import *
@@ -35,6 +38,9 @@ def draw():
     global image
     clear_canvas()
     image.draw(constant.screen_w // 2, constant.screen_h // 2, constant.screen_w, constant.screen_h)
+
+    print_numbers(play_state.score, constant.screen_w/2 - 100, constant.screen_h/2 - 100, 50)
+
     update_canvas()
 
 
