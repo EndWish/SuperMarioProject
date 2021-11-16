@@ -13,6 +13,9 @@ class Attack:
     def update(self):
         pass
 
+    def crash_enemies(self):
+        pass
+
     def draw(self):
         pass
 
@@ -36,6 +39,7 @@ class FireBall(Attack):
 
         self.rotate += self.spin_power * Global.delta_time * self.dir * -1
         self.move()
+        self.crash_enemies()
 
         self.life_time -= delta_time
         if self.life_time <= 0:
@@ -83,6 +87,14 @@ class FireBall(Attack):
 
         self.pos.y = target_pos.y
         play_state.add_collision_range(target_pos)
+
+    def crash_enemies(self):
+        for enemy in play_state.enemies:
+            col_xy = self.pos.collide_pos(enemy.pos)
+            if col_xy != (0, 0):    # 충돌 했을 경우
+                enemy.attacked(1)
+                play_state.attacks.remove(self)
+                break
 
     def draw(self):
         self.animator.draw(self.pos.x, self.pos.y, '', self.rotate)
