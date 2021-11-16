@@ -39,11 +39,13 @@ class FireBall(Attack):
 
         self.rotate += self.spin_power * Global.delta_time * self.dir * -1
         self.move()
-        self.crash_enemies()
+        if self.crash_enemies():
+            return
 
         self.life_time -= delta_time
         if self.life_time <= 0:
             play_state.attacks.remove(self)
+            return
 
     def move(self):
         delta_time = Global.delta_time
@@ -94,7 +96,9 @@ class FireBall(Attack):
             if col_xy != (0, 0):    # 충돌 했을 경우
                 enemy.attacked(1)
                 play_state.attacks.remove(self)
-                break
+                return True
+
+        return False
 
     def draw(self):
         self.animator.draw(self.pos.x, self.pos.y, '', self.rotate)
