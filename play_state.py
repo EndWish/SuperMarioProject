@@ -73,6 +73,8 @@ def handle_events():
                 mario.add_dir(-1)
             elif event.key == SDLK_UP:
                 mario.jump_key = True
+            elif event.key == SDLK_z:
+                mario.attack_fireball()
             elif event.key == SDLK_p:
                 Global.show_collide_rec = not Global.show_collide_rec
 
@@ -115,7 +117,8 @@ def draw():
     for effect in effects:
         effect.draw()
     # 공격 그리기
-
+    for attack in attacks:
+        attack.draw()
     # 구조물 그리기
     for structure in structures:
         structure.draw()
@@ -136,6 +139,9 @@ def update():
 
     for item in items:
         item.update()
+
+    for attack in attacks:
+        attack.update()
 
     for effect in effects:
         effect.update()

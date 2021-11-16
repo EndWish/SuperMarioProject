@@ -4,6 +4,7 @@ import game_framework
 import play_state
 from Position import *
 from Animation import *
+from Attack import *
 
 
 class Mario:
@@ -233,10 +234,19 @@ class Mario:
                         pass
                 break
 
-
     def jump(self):
         if self.landing:
             self.v_speed = 1500
+
+    def attack_fireball(self):
+        print("공격")
+
+        attack_dir = 1
+        if self.flip == 'h':
+            attack_dir = -1
+
+        attack = FireBall(self.pos, attack_dir)
+        play_state.attacks.append(attack)
 
     def draw(self):
         # 변신 상태일때
@@ -271,7 +281,7 @@ class Mario:
         if self.is_invincible():    # 무적일경우 아무것도 하지 않는다.
             return
         else:                       # 무적이 아닐경우
-            self.set_invincible(0.4)
+            self.set_invincible(0.8)
 
         # 진화 상태가 아닐때
         if self.mode == 0:
@@ -291,3 +301,4 @@ class Mario:
     def set_invincible(self, set_time):
         if self.invincible < set_time:
             self.invincible = set_time
+
