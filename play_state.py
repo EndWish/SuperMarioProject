@@ -82,6 +82,11 @@ def handle_events():
                 mario.attack_fireball()
             elif event.key == SDLK_p:
                 Global.show_collide_rec = not Global.show_collide_rec
+            elif event.key == SDLK_o:
+                if Global.game_fps == 30:
+                    Global.game_fps = 100
+                else:
+                    Global.game_fps = 30
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:

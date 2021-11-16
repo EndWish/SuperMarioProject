@@ -6,6 +6,7 @@ game_running = True
 show_collide_rec = True
 edit_mode = False
 
+game_fps = 100
 pre_time = time.time()
 delta_time = 0.01
 

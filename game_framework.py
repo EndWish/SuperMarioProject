@@ -1,4 +1,5 @@
 import time
+import math
 import pico2d
 import Global
 import constant
@@ -34,14 +35,22 @@ def run(start_state):
 
     # 반복적으로 실행하기
     while running:
-        if Global.delta_time <= 0.1:    # 프레임 드랍이 너무 심할때 정상화될때 까지 멈춤
+        if Global.delta_time <= 0.1:    # 프레임 드랍이 너무 심할때 정상화될때 까지 실행하지 않음
 
             stack[-1].handle_events()
-            stack[-1].update()
+
+            if Global.delta_time > 0.02:
+                repeat = math.ceil(Global.delta_time / 0.015)
+                Global.delta_time /= repeat
+                for _ in range(repeat):
+                    stack[-1].update()
+                print(repeat)
+            else:
+                stack[-1].update()
 
             # 프레임 고정
-            if time.time() - Global.pre_time < (1.0 / constant.game_fps):
-                pico2d.delay((1.0 / constant.game_fps) - (time.time() - Global.pre_time))
+            if time.time() - Global.pre_time < (1.0 / Global.game_fps):
+                pico2d.delay((1.0 / Global.game_fps) - (time.time() - Global.pre_time))
 
             stack[-1].draw()
 
