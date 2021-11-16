@@ -13,6 +13,7 @@ from pico2d import *
 
 name = "PlayState"
 background_img = None
+heart_img = None
 
 
 mario = None
@@ -29,8 +30,10 @@ score = int()
 collisions_range = set()
 
 def enter():
-    global background_img, mario, blocks, items, enemies, attacks, effects, structures, flag
+    global background_img, heart_img
+    global mario, blocks, items, enemies, attacks, effects, structures, flag
     background_img = load_image('ImageFolder/Background1_1_Img.png')
+    heart_img = load_image('ImageFolder/Heart_Img.png')
     # 카메라 정보 가져오기
     Global.camera.load_window_max('DataFolder/stage' + str(Global.play_stage_number) + '_camera.txt')
     # 마리오
@@ -52,8 +55,10 @@ def enter():
 
 
 def exit():
-    global background_img, mario, blocks, items, effects, enemies, attacks, flag
-    del background_img, mario, blocks, items, effects, enemies, attacks, flag
+    global background_img, heart_img
+    global mario, blocks, items, effects, enemies, attacks, flag
+    del background_img, heart_img
+    del mario, blocks, items, effects, enemies, attacks, flag
 
 
 def handle_events():
@@ -128,8 +133,10 @@ def draw():
         collision.draw_collision_rect()
     collisions_range.clear()
 
-    # UI그리기
-    print_numbers(score, constant.screen_w - 150, constant.screen_h - 30, 30)
+    # UI 그리기
+    heart_img.draw(30, constant.screen_h - 30, 40, 40)  # 하트
+    print_numbers(mario.life, 70, constant.screen_h - 30, 30)  # 목숨 수
+    print_numbers(score, constant.screen_w - 150, constant.screen_h - 30, 30)   # 점수
 
     update_canvas()
 
