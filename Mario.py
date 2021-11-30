@@ -14,6 +14,7 @@ class Mario:
         self.death = False
         self.clear = False
         self.invincible = 0
+        self.super_invincible = 0
         self.pos = Position(x, y, 46, 46)
         
         self.mode = 0
@@ -80,6 +81,7 @@ class Mario:
             return
 
         self.invincible -= delta_time
+        self.super_invincible -= delta_time
 
         if self.mode != self.change_mode:   # 변신중
             self.changing()
@@ -216,6 +218,10 @@ class Mario:
         for enemy in play_state.enemies:
             col_xy = self.pos.collide_pos(enemy.pos)
             if col_xy != (0, 0):    # 충돌 했을 경우
+                if self.super_invincible > 0:
+                    enemy.attacked(1)
+                    break
+
                 if -20 < col_xy[1] < 0:
                     if self.v_speed < 0:
                         # 위에서 밟았을 경우
@@ -224,12 +230,13 @@ class Mario:
                         pass
                 else:
                     # 적에게 맞을 경우
-                    self.speed, self.v_speed = col_xy[0] * -250, col_xy[1] * -20
+                    # self.speed, self.v_speed = col_xy[0] * -250, col_xy[1] * -20
                     if self.is_invincible():
                         # 무적인 경우
                         pass
                     else:
                         # 무적이 아닌데, 적에게 맞을경우
+                        self.speed, self.v_speed = col_xy[0] * -250, col_xy[1] * -20
                         self.downgrage_change_mode()
                         pass
                 break

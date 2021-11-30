@@ -3,6 +3,7 @@ import Global
 import random
 from Position import *
 from Animation import *
+from Effect import *
 import play_state
 
 
@@ -286,6 +287,44 @@ class Coin(Item):
             play_state.items.remove(self)
 
 
+class SuperStar(Item):
+    def item_number(self):
+        return 5
+
+    def __init__(self, pos):
+        super().__init__()
+        self.animator = OriginAnimation(Global.item_img, 0, 20, 16, 18, 50, 50, 4, 20, 0.1)
+        self.pos = Position(float(pos.x), float(pos.y), 47, 47)
+        self.mode = 0
+        self.v_speed = 0
+
+        self.rise = 0
+
+    def update(self):
+        delta_time = Global.delta_time
+
+        if self.mode == 0:  # 블럭에서 생성되서 나타날때
+            self.v_speed = 100
+            self.pos.y += self.v_speed * delta_time
+            self.rise += self.v_speed * delta_time
+            if self.rise >= 50:
+                self.mode = 1
+
+        elif self.mode == 1:    # 일반적인 상황
+            self.base_move()
+            self.crash_mario()
+
+    def base_move(self):
+        pass
+
+    def crash_mario(self):
+        col_xy = self.pos.collide_pos(play_state.mario.pos)
+        if col_xy != (0, 0):
+            play_state.mario.set_invincible(10)
+            play_state.mario.super_invincible = 10
+            play_state.effects.append(SuperStarLightEffect())
+            play_state.items.remove(self)
+
 def make_item_from_block(number, block):
     if number == 1:
         return SuperMushroom(block.pos)
@@ -295,3 +334,5 @@ def make_item_from_block(number, block):
         return FireFlower(block.pos)
     elif number == 4:
         return Coin(block.pos)
+    elif number == 5:
+        return SuperStar(block.pos)

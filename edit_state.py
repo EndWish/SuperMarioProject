@@ -45,6 +45,7 @@ edit_obj_buttons = [
         EditItemButton(75, constant.screen_h - 25, 2),
         EditItemButton(125, constant.screen_h - 25, 3),
         EditItemButton(175, constant.screen_h - 25, 4),
+        EditItemButton(225, constant.screen_h - 25, 5),
     ],
     [
         EditEnemyButton(25, constant.screen_h - 25, 1),

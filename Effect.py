@@ -49,3 +49,20 @@ class WreckageEffect:
                 continue
             self.animators[i].draw(self.poses[i].x, self.poses[i].y, '', self.rotations[i])
 
+
+class SuperStarLightEffect:
+    def __init__(self):
+        self.pos = Position(play_state.mario.pos.x, play_state.mario.pos.y, 0, 0)
+        self.animator = OriginAnimation(Global.item_img, 0, 20, 16, 18, 100, 100, 4, 20, 0.1)
+
+    def update(self):
+        if play_state.mario.invincible <= 0:    # 소멸 조건
+            play_state.effects.remove(self)
+            
+        self.pos.x = play_state.mario.pos.x
+        self.pos.y = play_state.mario.pos.y
+
+    def draw(self):
+        self.animator.image.opacify(0.3)
+        self.animator.draw(self.pos.x, self.pos.y, '')
+        self.animator.image.opacify(1.0)
