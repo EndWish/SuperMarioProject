@@ -107,6 +107,7 @@ class BrickBlock(Block):
 
     def heading(self):
         super().heading()
+        Global.blockHeading_wav.play(1)
         play_state.effects.append(WreckageEffect(self.pos))
         play_state.blocks.remove(self)
         # 이펙트 생성

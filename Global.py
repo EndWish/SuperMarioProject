@@ -24,6 +24,7 @@ attack_img = None
 numbers_img = None
 
 # 사운드
+bgm_mp3 = None
 oneUp_wav = None
 powerUp_wav = None
 powerDown_wav = None
@@ -56,7 +57,8 @@ def del_images():
 
 def load_sound():
     global powerUp_wav, powerDown_wav, coin_wav, marioDies_wav, marioJump_wav, itemSprouting_wav, oneUp_wav
-    global getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav
+    global getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav, bgm_mp3
+    bgm_mp3 = pico2d.load_music('SoundFolder/BGM.mp3')
     oneUp_wav = pico2d.load_wav('SoundFolder/1-Up.wav')
     powerUp_wav = pico2d.load_wav('SoundFolder/Power up.wav')
     powerDown_wav = pico2d.load_wav('SoundFolder/Power down.wav')
@@ -73,6 +75,6 @@ def load_sound():
 
 def del_sound():
     global powerUp_wav, powerDown_wav, coin_wav, marioDies_wav, marioJump_wav, itemSprouting_wav, oneUp_wav
-    global getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav
+    global getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav, bgm_mp3
     del powerUp_wav, powerDown_wav, coin_wav, marioDies_wav, marioJump_wav, itemSprouting_wav, oneUp_wav
-    del getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav
+    del getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav, bgm_mp3

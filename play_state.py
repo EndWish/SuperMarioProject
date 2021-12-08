@@ -53,13 +53,15 @@ def enter():
     attacks = []
     effects = []
 
+    Global.bgm_mp3.repeat_play()
+
 
 def exit():
     global background_img, heart_img
     global mario, blocks, items, effects, enemies, attacks, flag
     del background_img, heart_img
     del mario, blocks, items, effects, enemies, attacks, flag
-
+    Global.bgm_mp3.stop()
 
 def handle_events():
     global mario
