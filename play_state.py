@@ -58,10 +58,11 @@ def enter():
 
 def exit():
     global background_img, heart_img
-    global mario, blocks, items, effects, enemies, attacks, flag
+    global mario, blocks, items, effects, enemies, attacks, flag, score
     del background_img, heart_img
     del mario, blocks, items, effects, enemies, attacks, flag
     Global.bgm_mp3.stop()
+    score = 0
 
 def handle_events():
     global mario
