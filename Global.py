@@ -3,7 +3,7 @@ import pico2d
 
 
 game_running = True
-show_collide_rec = True
+show_collide_rec = False
 edit_mode = False
 
 game_fps = 100
