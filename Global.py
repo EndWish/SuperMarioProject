@@ -23,6 +23,19 @@ editButton_img = None
 attack_img = None
 numbers_img = None
 
+# 사운드
+oneUp_wav = None
+powerUp_wav = None
+powerDown_wav = None
+getHit_wav = None
+coin_wav = None
+marioDies_wav = None
+marioJump_wav = None
+itemSprouting_wav = None
+enemyGetHit_wav = None
+blockHeading_wav = None
+throwingFireball_wav = None
+
 
 def load_images():
     global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img, numbers_img
@@ -39,3 +52,27 @@ def load_images():
 def del_images():
     global player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img, numbers_img
     del player_img, structure_img, enemy_img, item_img, stageButton_img, editButton_img, attack_img, numbers_img
+
+
+def load_sound():
+    global powerUp_wav, powerDown_wav, coin_wav, marioDies_wav, marioJump_wav, itemSprouting_wav, oneUp_wav
+    global getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav
+    oneUp_wav = pico2d.load_wav('SoundFolder/1-Up.wav')
+    powerUp_wav = pico2d.load_wav('SoundFolder/Power up.wav')
+    powerDown_wav = pico2d.load_wav('SoundFolder/Power down.wav')
+    getHit_wav = pico2d.load_wav('SoundFolder/Get hit.wav')
+    coin_wav = pico2d.load_wav('SoundFolder/Coin.wav')
+    marioDies_wav = pico2d.load_wav('SoundFolder/Mario dies.wav')
+    marioJump_wav = pico2d.load_wav('SoundFolder/Mario jump.wav')
+    marioJump_wav.set_volume(50)
+    itemSprouting_wav = pico2d.load_wav('SoundFolder/Item sprouting.wav')
+    enemyGetHit_wav = pico2d.load_wav('SoundFolder/Enemy get hit.wav')
+    blockHeading_wav = pico2d.load_wav('SoundFolder/Block heading.wav')
+    throwingFireball_wav = pico2d.load_wav('SoundFolder/Throwing fireball.wav')
+
+
+def del_sound():
+    global powerUp_wav, powerDown_wav, coin_wav, marioDies_wav, marioJump_wav, itemSprouting_wav, oneUp_wav
+    global getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav
+    del powerUp_wav, powerDown_wav, coin_wav, marioDies_wav, marioJump_wav, itemSprouting_wav, oneUp_wav
+    del getHit_wav, enemyGetHit_wav, blockHeading_wav, throwingFireball_wav

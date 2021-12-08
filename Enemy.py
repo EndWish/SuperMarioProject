@@ -35,6 +35,7 @@ class Enemy:
         play_state.enemies.remove(self)
 
     def attacked(self, dmg):
+        Global.enemyGetHit_wav.play(1)
         self.life -= dmg
         if self.life <= 0:
             self.death()

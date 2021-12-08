@@ -244,10 +244,13 @@ class Mario:
     def jump(self):
         if self.landing:
             self.v_speed = 1500
+            Global.marioJump_wav.play(1)
 
     def attack_fireball(self):
-        print("공격")
+        if self.mode != 2:
+            return
 
+        Global.throwingFireball_wav.play(1)
         attack_dir = 1
         if self.flip == 'h':
             attack_dir = -1
@@ -283,6 +286,7 @@ class Mario:
         else:
             self.change_mode = mode
             self.set_invincible(1)
+            Global.powerUp_wav.play(1)
 
     def downgrage_change_mode(self):
         if self.is_invincible():    # 무적일경우 아무것도 하지 않는다.
@@ -296,9 +300,11 @@ class Mario:
                 self.death = True
             else:
                 self.life -= 1
+                Global.getHit_wav.play(1)
         # 진화 상태 일때
         else:
             self.change_mode = self.mode - 1
+            Global.powerDown_wav.play(1)
 
     def is_invincible(self):
         if self.invincible > 0:

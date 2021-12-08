@@ -47,9 +47,12 @@ class SuperMushroom(Item):
         delta_time = Global.delta_time
 
         if self.mode == 0:  # 블럭에서 생성되서 나타날때
+            if self.rise == 0:
+                Global.itemSprouting_wav.play(1)
             self.v_speed = 500
             self.pos.y += self.v_speed * delta_time
             self.rise += self.v_speed * delta_time
+
             if self.rise > 50:
                 self.mode = 1
                 self.dir = (-1, 1)[random.randint(0, 1)]
@@ -134,6 +137,8 @@ class LifeUpMushroom(Item):
         delta_time = Global.delta_time
 
         if self.mode == 0:  # 블럭에서 생성되서 나타날때
+            if self.rise == 0:
+                Global.itemSprouting_wav.play(1)
             self.v_speed = 500
             self.pos.y += self.v_speed * delta_time
             self.rise += self.v_speed * delta_time
@@ -199,6 +204,7 @@ class LifeUpMushroom(Item):
         if col_xy != (0, 0):
             play_state.mario.life += 1
             play_state.items.remove(self)
+            Global.oneUp_wav.play(1)
 
 
 class FireFlower(Item):
@@ -218,6 +224,8 @@ class FireFlower(Item):
         delta_time = Global.delta_time
 
         if self.mode == 0:  # 블럭에서 생성되서 나타날때
+            if self.rise == 0:
+                Global.itemSprouting_wav.play(1)
             self.v_speed = 100
             self.pos.y += self.v_speed * delta_time
             self.rise += self.v_speed * delta_time
@@ -269,6 +277,7 @@ class Coin(Item):
             if self.life_time <= 0:
                 play_state.score += 100
                 play_state.items.remove(self)
+                Global.coin_wav.play(1)
 
     def base_move(self):
         delta_time = Global.delta_time
@@ -285,6 +294,7 @@ class Coin(Item):
         if col_xy != (0, 0):
             play_state.score += 100
             play_state.items.remove(self)
+            Global.coin_wav.play(1)
 
 
 class SuperStar(Item):
@@ -304,6 +314,8 @@ class SuperStar(Item):
         delta_time = Global.delta_time
 
         if self.mode == 0:  # 블럭에서 생성되서 나타날때
+            if self.rise == 0:
+                Global.itemSprouting_wav.play(1)
             self.v_speed = 100
             self.pos.y += self.v_speed * delta_time
             self.rise += self.v_speed * delta_time

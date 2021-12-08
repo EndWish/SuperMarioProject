@@ -90,6 +90,7 @@ class BounceBlock(Block):
 
     def heading(self):
         super(BounceBlock, self).heading()
+        Global.blockHeading_wav.play(1)
         self.bounce = 0.15
         if len(self.item_queue) > 0:
             play_state.items.append(self.item_queue[0])

@@ -21,7 +21,7 @@ running = None
 stack = []  # stat 를 넣는 stack
 
 
-def run(start_state):
+def run(start_state: object) -> object:
     global running, stack
     running = True
     stack = [start_state]
@@ -30,6 +30,7 @@ def run(start_state):
     Global.pre_time = time.time()
     Global.delta_time = 0.01
     Global.load_images()
+    Global.load_sound()
 
     Global.camera = Camera()
 
@@ -64,6 +65,7 @@ def run(start_state):
         stack.pop()
 
     Global.del_images()
+    Global.del_sound()
 
 
 def quit():
